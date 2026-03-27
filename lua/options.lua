@@ -5,9 +5,7 @@
 
 -- Make line numbers default
 vim.o.number = true
--- You can also add relative line numbers, to help with jumping.
---  Experiment for yourself to see if you like it!
--- vim.o.relativenumber = true
+vim.o.relativenumber = true
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.o.mouse = 'a'
@@ -28,8 +26,8 @@ vim.o.breakindent = true
 vim.o.undofile = true
 
 -- Case-insensitive searching UNLESS \C or one or more capital letters in the search term
-vim.o.ignorecase = true
-vim.o.smartcase = true
+vim.o.ignorecase = false
+vim.o.smartcase = false
 
 -- Keep signcolumn on by default
 vim.o.signcolumn = 'yes'
@@ -69,4 +67,12 @@ vim.o.scrolloff = 10
 -- See `:help 'confirm'`
 vim.o.confirm = true
 
+vim.o.shiftwidth = 2
+vim.o.tabstop = 2
+vim.o.smarttab = true
+
+-- vim.scriptencoding = 'utf-8'
+-- vim.opt.encoding = 'utf-8'
+-- vim.opt.fileencoding = 'utf-8'
+--
 -- vim: ts=2 sts=2 sw=2 et

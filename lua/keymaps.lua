@@ -1,9 +1,10 @@
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
+local map = vim.keymap.set
 
 -- Clear highlights on search when pressing <Esc> in normal mode
 --  See `:help hlsearch`
-vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
+map('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
 -- Diagnostic Config & Keymaps
 -- See :help vim.diagnostic.Opts
@@ -21,7 +22,7 @@ vim.diagnostic.config {
   jump = { float = true },
 }
 
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
+map('n', ',q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
@@ -29,28 +30,28 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 --
 -- NOTE: This won't work in all terminal emulators/tmux/etc. Try your own mapping
 -- or just use <C-\><C-n> to exit terminal mode
-vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
+map('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
 -- TIP: Disable arrow keys in normal mode
--- vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
--- vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
--- vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
--- vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
+-- map('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
+-- map('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
+-- map('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
+-- map('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
 
 -- Keybinds to make split navigation easier.
 --  Use CTRL+<hjkl> to switch between windows
 --
 --  See `:help wincmd` for a list of all window commands
-vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
-vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
-vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
-vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+map('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
+map('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
+map('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
+map('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
 -- NOTE: Some terminals have colliding keymaps or are not able to send distinct keycodes
--- vim.keymap.set("n", "<C-S-h>", "<C-w>H", { desc = "Move window to the left" })
--- vim.keymap.set("n", "<C-S-l>", "<C-w>L", { desc = "Move window to the right" })
--- vim.keymap.set("n", "<C-S-j>", "<C-w>J", { desc = "Move window to the lower" })
--- vim.keymap.set("n", "<C-S-k>", "<C-w>K", { desc = "Move window to the upper" })
+-- map("n", "<C-S-h>", "<C-w>H", { desc = "Move window to the left" })
+-- map("n", "<C-S-l>", "<C-w>L", { desc = "Move window to the right" })
+-- map("n", "<C-S-j>", "<C-w>J", { desc = "Move window to the lower" })
+-- map("n", "<C-S-k>", "<C-w>K", { desc = "Move window to the upper" })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -65,3 +66,27 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 })
 
 -- vim: ts=2 sts=2 sw=2 et
+
+map('i', 'jk', '<Esc>', { desc = 'Returns to normal mode' })
+
+map({ 'n', 'v', 'x' }, '<leader>p', [["_dP]], { desc = 'Pastes from the global clipboard and prevents selection to be yanked' })
+map('n', 'x', '"_x', { desc = 'Delete under cursor and prevents to be yanked' })
+map({ 'n', 'v' }, '<leader>d', '"_d', { desc = 'Deletes text under cursor/selection and prevents selection to be yanked' })
+
+map('n', '<leader>q', ':q<CR>', { desc = 'Closes the current window' })
+map('n', '<leader>Q', ':qa<CR>', { desc = 'Closes all windows' })
+map('n', '<M-v>', '<C-W>v<C-W>l', { desc = 'Opens and places cursor in a new vertical window' })
+map('n', '<M-t>', ':tabnew<CR>', { desc = 'Opens new tab' })
+
+map('v', 'J', ":m '>+1<CR>gv=gv", { desc = 'Moves selected lines down' })
+map('v', 'K', ":m '<-2<CR>gv=gv", { desc = 'Moves selected lines up' })
+map('n', 'J', 'mzJ`z', { desc = 'Joins lines and keeps the cursor in the same place' })
+
+map('n', '<C-d>', '<C-d>zz', { desc = 'Jumps down and keeps the cursor in the same place' })
+map('n', '<C-u>', '<C-u>zz', { desc = 'Jumps up and keeps the cursor in the same place' })
+map('n', 'n', 'nzzzv', { desc = 'Goes to the next result on the search and keeps the cursor in the middle of the screen' })
+map('n', 'N', 'Nzzzv', { desc = 'Goes to the previous result on the search and keeps the cursor in the middle of the screen' })
+
+map('n', ':W', ':w')
+
+map('n', 'Q', '<nop>')

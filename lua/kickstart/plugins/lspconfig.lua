@@ -72,11 +72,11 @@ return {
 
           -- Execute a code action, usually your cursor needs to be on top of an error
           -- or a suggestion from your LSP for this to activate.
-          map('gra', vim.lsp.buf.code_action, '[G]oto Code [A]ction', { 'n', 'x' })
+          map('gca', vim.lsp.buf.code_action, '[G]oto Code [A]ction', { 'n', 'x' })
 
           -- WARN: This is not Goto Definition, this is Goto Declaration.
           --  For example, in C this would take you to the header.
-          map('grD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+          map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
 
           -- The following two autocommands are used to highlight references of the
           -- word under your cursor when your cursor rests there for a little while.
@@ -114,6 +114,11 @@ return {
           if client and client:supports_method('textDocument/inlayHint', event.buf) then
             map('<leader>th', function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf }) end, '[T]oggle Inlay [H]ints')
           end
+
+          if client and client.name == 'phpactor' then
+            map('<leader>pm', ':PhpactorContextMenu<CR>', '[P]hpactor [M]enu')
+            map('<leader>pn', ':PhpactorClassNew<CR>', '[P]hpactor [N]ew Class')
+          end
         end,
       })
 
@@ -122,17 +127,6 @@ return {
       --  See `:help lsp-config` for information about keys and how to configure
       ---@type table<string, vim.lsp.Config>
       local servers = {
-        -- clangd = {},
-        -- gopls = {},
-        -- pyright = {},
-        -- rust_analyzer = {},
-        --
-        -- Some languages (like typescript) have entire language plugins that can be useful:
-        --    https://github.com/pmizio/typescript-tools.nvim
-        --
-        -- But for many setups, the LSP (`ts_ls`) will work just fine
-        -- ts_ls = {},
-
         stylua = {}, -- Used to format Lua code
 
         -- Special Lua Config, as recommended by neovim help docs
@@ -163,6 +157,30 @@ return {
             Lua = {},
           },
         },
+
+        intelephense = {
+          settings = {
+            intelephense = {
+              files = {
+                maxsize = 5000000,
+              },
+            },
+          },
+        },
+
+        -- Used for PHP refactoring
+        phpactor = {
+          -- Disable autocompletion (intelephense used for this)
+          capabilities = {
+            textDocument = {
+              completion = {
+                completionItem = {
+                  snippetSupport = false,
+                },
+              },
+            },
+          },
+        },
       }
 
       -- Ensure the servers and tools above are installed
@@ -174,7 +192,8 @@ return {
       -- You can press `g?` for help in this menu.
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
-        -- You can add other tools here that you want Mason to install
+        'php-cs-fixer', -- Linter / formatter
+        'phpstan', -- static analysis
       })
 
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }

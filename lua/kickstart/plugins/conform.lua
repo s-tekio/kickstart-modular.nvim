@@ -14,6 +14,7 @@ return {
       },
     },
     ---@module 'conform'
+    ---@diagnostic disable-next-line: undefined-doc-name
     ---@type conform.setupOpts
     opts = {
       notify_on_error = false,
@@ -26,18 +27,25 @@ return {
           return nil
         else
           return {
-            timeout_ms = 500,
+            timeout_ms = 2000,
             lsp_format = 'fallback',
           }
         end
       end,
       formatters_by_ft = {
         lua = { 'stylua' },
-        -- Conform can also run multiple formatters sequentially
-        -- python = { "isort", "black" },
-        --
-        -- You can use 'stop_after_first' to run the first available formatter from the list
-        -- javascript = { "prettierd", "prettier", stop_after_first = true },
+        php = { 'php_cs_fixer' },
+      },
+      formatters = {
+        php_cs_fixer = {
+          command = 'php-cs-fixer',
+          args = {
+            'fix',
+            '$FILENAME',
+            '--allow-risky=yes',
+          },
+          stdin = false,
+        },
       },
     },
   },
