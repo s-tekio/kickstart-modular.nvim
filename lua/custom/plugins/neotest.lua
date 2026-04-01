@@ -1,30 +1,86 @@
 return {
-  {
-    'nvim-neotest/neotest',
-    dependencies = {
-      'nvim-neotest/nvim-nio',
-      'nvim-lua/plenary.nvim',
-      'antoinemadec/FixCursorHold.nvim',
-      'nvim-treesitter/nvim-treesitter',
-      'olimorris/neotest-phpunit',
-    },
-    config = function()
-      --- @diagnostic disable-next-line: missing-fields
-      require('neotest').setup {
-        adapters = {
-          require 'neotest-phpunit' {
-            phpunit_cmd = function() return 'vendor/bin/phpunit' end,
-          },
-        },
-      }
-
-      local map = vim.keymap.set
-      map('n', '<leader>tt', function() require('neotest').run.run() end, { desc = '[T]est [R]un nearest' })
-      map('n', '<leader>tf', function() require('neotest').run.run(vim.fn.expand '%') end, { desc = '[T]est run [F]ile' })
-      map('n', '<leader>ts', function() require('neotest').summary.toggle() end, { desc = '[T]est [S]ummary toggle' })
-      map('n', '<leader>to', function() require('neotest').output_panel.toggle() end, { desc = '[T]est [O]utput panel' })
-      map('n', '[t', function() require('neotest').jump.prev { status = 'failed' } end, { desc = 'Jump to previous failed test' })
-      map('n', ']t', function() require('neotest').jump.next { status = 'failed' } end, { desc = 'Jump to next failed test' })
-    end,
-  },
 }
+
+-- local project_to_service = {
+--   ['authentication-service'] = 'auth',
+--   ['notifications-service'] = 'noti',
+--   ['status-service'] = 'status',
+--   ['customer-satisfaction-service'] = 'cs',
+--   ['roles-permissions-service'] = 'rp',
+--   ['payments-service'] = 'payments',
+--   ['data-service'] = 'data',
+--   ['api-gateway'] = 'api-gateway',
+-- }
+--
+-- return {
+--   {
+--     'nvim-neotest/neotest',
+--     dependencies = {
+--       'nvim-neotest/nvim-nio',
+--       'nvim-lua/plenary.nvim',
+--       'antoinemadec/FixCursorHold.nvim',
+--       'nvim-treesitter/nvim-treesitter',
+--       'olimorris/neotest-phpunit',
+--     },
+--     config = function()
+--       --- @diagnostic disable-next-line:missing-fields
+--       require('neotest').setup {
+--         adapters = {
+--           require 'neotest-phpunit' {
+--             root_files = { 'composer.json', 'phpunit.xml', 'tests/functional-tests.xml' },
+--
+--             filter_dirs = { 'vendor', '.git', 'node_modules' },
+--
+--             phpunit_cmd = function()
+--               local path = vim.api.nvim_buf_get_name(0)
+--               local composer_match = vim.fs.find({ 'composer.json' }, { path = path, upward = true })[1]
+--
+--               if not composer_match then
+--                 return "vendor/bin/phpunit"
+--               end
+--
+--               local project_root = vim.fs.dirname(composer_match)
+--               local project_name = vim.fn.fnamemodify(project_root, ':t')
+--               local service = project_to_service[project_name]
+--               local root_path = os.getenv '_ROOT'
+--
+--               -- Ruta relativa para usar dentro del contenedor (/app/...)
+--               local relative_file_path = path:sub(#project_root + 2)
+--
+--               local config_file = 'phpunit.xml'
+--               if vim.fn.filereadable(project_root .. '/tests/functional-tests.xml') == 1 then
+--                 config_file = 'tests/functional-tests.xml'
+--               end
+--
+--               if service and root_path then
+--                 local compose_path = root_path .. '/backend/docker-compose.yml'
+--
+--                 return {
+--                   'docker', 'compose', '-f', compose_path,
+--                   'exec', '-i', 
+--                   '-e', 'APP_ENV=test', 
+--                   service,
+--                   'sh', '-c',
+--                   string.format(
+--                     'php -d xdebug.mode=debug /app/vendor/bin/phpunit -c /app/%s /app/%s',
+--                     config_file,
+--                     relative_file_path
+--                   )
+--                 }
+--               end
+--
+--               return { 'vendor/bin/phpunit', '-c', project_root .. '/' .. config_file }
+--             end,
+--           },
+--         },
+--       }
+--
+--       -- Keymaps
+--       local map = vim.keymap.set
+--       map('n', '<leader>tt', function() require('neotest').run.run() end, { desc = 'Test Nearest' })
+--       map('n', '<leader>tf', function() require('neotest').run.run(vim.fn.expand '%') end, { desc = 'Test File' })
+--       map('n', '<leader>ts', function() require('neotest').summary.toggle() end, { desc = 'Summary' })
+--       map('n', '<leader>to', function() require('neotest').output_panel.toggle() end, { desc = 'Output' })
+--     end,
+--   },
+-- }
