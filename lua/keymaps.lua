@@ -47,8 +47,8 @@ map('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
 map('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 map('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
-map('n', 'H', ':tabprevious<CR>', { desc = 'Previous tab' })
-map('n', 'L', ':tabnext<CR>', { desc = 'Next tab' })
+-- map('n', 'H', ':tabprevious<CR>', { desc = 'Previous tab' })
+-- map('n', 'L', ':tabnext<CR>', { desc = 'Next tab' })
 
 -- NOTE: Some terminals have colliding keymaps or are not able to send distinct keycodes
 -- map("n", "<C-S-h>", "<C-w>H", { desc = "Move window to the left" })
@@ -76,7 +76,8 @@ map({ 'n', 'v', 'x' }, '<leader>p', [["_dP]], { desc = 'Pastes from the global c
 map('n', 'x', '"_x', { desc = 'Delete under cursor and prevents to be yanked' })
 map({ 'n', 'v' }, '<leader>d', '"_d', { desc = 'Deletes text under cursor/selection and prevents selection to be yanked' })
 
-map('n', '<leader>q', ':q<CR>', { desc = 'Closes the current window' })
+-- <leader>q is defined in bufferline
+-- map('n', '<leader>q', ':q<CR>', { desc = 'Closes the current window' })
 map('n', '<leader>Q', ':qa<CR>', { desc = 'Closes all windows' })
 map('n', '<M-v>', '<C-W>v<C-W>l', { desc = 'Opens and places cursor in a new vertical window' })
 map('n', '<M-t>', ':tabnew<CR>', { desc = 'Opens new tab' })
@@ -90,6 +91,6 @@ map('n', '<C-u>', '<C-u>zz', { desc = 'Jumps up and keeps the cursor in the same
 map('n', 'n', 'nzzzv', { desc = 'Goes to the next result on the search and keeps the cursor in the middle of the screen' })
 map('n', 'N', 'Nzzzv', { desc = 'Goes to the previous result on the search and keeps the cursor in the middle of the screen' })
 
-map('n', ':W', ':w')
+-- map('c', 'W', 'w')
 
 map('n', 'Q', '<nop>')
