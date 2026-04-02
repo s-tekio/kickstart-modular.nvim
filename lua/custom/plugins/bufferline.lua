@@ -4,7 +4,8 @@ local function smart_quit()
   if #buffers <= 1 then
     vim.cmd('qa')
   else
-    Snacks.bufdelete()
+    vim.cmd('bdelete')
+    -- Snacks.bufdelete()
   end
 end
 
