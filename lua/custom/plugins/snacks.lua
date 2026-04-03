@@ -83,7 +83,6 @@ return {
         { desc = 'Todo/Fix/Fixme (Project Root)' }
       )
       map('n', '<leader><leader>', picker.buffers, { desc = '[ ] Find existing buffers' })
-      map('n', ',n', function() require('snacks').notifier.show_history() end, { desc = 'Notification History' })
       map('n', '<leader>fn', function() picker.files { cwd = vim.fn.stdpath 'config' } end, { desc = '[S]earch [N]eovim files' })
       map('n', '<leader>/', function() picker.lines() end, { desc = '[/] Fuzzily search in current buffer' })
       map('n', '<leader>f/', function() picker.grep_buffers() end, { desc = '[S]earch [/] in Open Files' })
