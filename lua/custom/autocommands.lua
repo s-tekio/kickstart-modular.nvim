@@ -1,3 +1,66 @@
+-- custom/autocommands.lua
+
+local my_custom_commands = {
+  {
+    title = "PhpService",
+    cmd = "PhpService",
+    desc = "Configure Docker Container (Service)"
+  },
+  {
+    title = "XDebugPort",
+    cmd = "XDebugPort",
+    desc = "Change XDebug Listening Port (default: 9004)"
+  },
+}
+
+vim.api.nvim_create_user_command('MyTools', function()
+  local display_items = {}
+  for _, item in ipairs(my_custom_commands) do
+    table.insert(display_items, string.format("%-12s │ %s", item.title, item.desc))
+  end
+
+  vim.ui.select(display_items, {
+    prompt = 'My Neovim Tools:',
+    format_item = function(item)
+      return item
+    end,
+  }, function(choice, idx)
+    if choice and idx then
+      local command = my_custom_commands[idx].cmd
+      vim.cmd(command)
+    end
+  end)
+end, { desc = "Open custom tools menu" })
+
+-- vim.api.nvim_create_user_command('MyTools', function()
+--   local choices = {}
+--   local cmd_map = {}
+--
+--   ---@diagnostic disable-next-line:unused-local
+--   for i, item in ipairs(my_custom_commands) do
+--     local text = string.format("%-15s — %s", item.title, item.desc)
+--     table.insert(choices, text)
+--     cmd_map[text] = item.cmd
+--   end
+--
+--   local opts = {
+--     prompt = "My Neovim Tools",
+--   }
+--
+--   local on_choice = function(choice)
+--     if choice and cmd_map[choice] then
+--       vim.cmd(cmd_map[choice])
+--     end
+--   end
+--
+--   Snacks.picker.select(choices, opts, on_choice)
+-- end, { desc = "Open custom tools menu" })
+
+vim.keymap.set('n', '<leader>mm', ':MyTools<CR>', { desc = 'My Custom Tools Menu' })
+
+----------------------------
+--- Commands Definitions ---
+----------------------------
 vim.api.nvim_create_user_command('PhpService', function()
   vim.ui.input({
     prompt = "Enter Docker container's name: ",
