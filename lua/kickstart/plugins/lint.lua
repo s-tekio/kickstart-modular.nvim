@@ -12,6 +12,22 @@ return {
       php = { 'phpstan' },
     }
 
+    -- NOTE: Uncomment to use phpstan from project's vendor
+    --
+    -- local phpstan = lint.linters.phpstan
+    -- phpstan.cmd = 'phpstan' -- System/Mason binary by default
+    --
+    -- -- Try to use from vendor
+    -- if vim.fn.executable('vendor/bin/phpstan') == 1 then
+    --   phpstan.cmd = 'vendor/bin/phpstan'
+    -- end
+    --
+    -- phpstan.args = {
+    --   'analyze',
+    --   '--error-format=json',
+    --   '--no-progress',
+    -- }
+
     -- To allow other plugins to add linters to require('lint').linters_by_ft,
     -- instead set linters_by_ft like this:
     -- lint.linters_by_ft = lint.linters_by_ft or {}
