@@ -15,6 +15,7 @@ return {
   keys = {
     { '\\', ':Neotree toggle<CR>', desc = 'NeoTree toggle', silent = true },
     { '<leader>nr', ':Neotree reveal<CR>', desc = '[N]eoTree [R]eveal', silent = true },
+    { '<leader>gs', ':Neotree float git_status<CR>', desc = '[N]eoTree [G]it [S]tatus', silent = true },
   },
   ---@module 'neo-tree'
   ---@type neotree.Config
