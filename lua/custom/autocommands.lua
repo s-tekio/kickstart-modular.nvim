@@ -32,30 +32,6 @@ vim.api.nvim_create_user_command('MyTools', function()
   end)
 end, { desc = "Open custom tools menu" })
 
--- vim.api.nvim_create_user_command('MyTools', function()
---   local choices = {}
---   local cmd_map = {}
---
---   ---@diagnostic disable-next-line:unused-local
---   for i, item in ipairs(my_custom_commands) do
---     local text = string.format("%-15s — %s", item.title, item.desc)
---     table.insert(choices, text)
---     cmd_map[text] = item.cmd
---   end
---
---   local opts = {
---     prompt = "My Neovim Tools",
---   }
---
---   local on_choice = function(choice)
---     if choice and cmd_map[choice] then
---       vim.cmd(cmd_map[choice])
---     end
---   end
---
---   Snacks.picker.select(choices, opts, on_choice)
--- end, { desc = "Open custom tools menu" })
-
 vim.keymap.set('n', '<leader>mm', ':MyTools<CR>', { desc = 'My Custom Tools Menu' })
 
 ----------------------------
