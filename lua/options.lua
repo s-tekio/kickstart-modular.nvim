@@ -70,6 +70,9 @@ vim.o.confirm = true
 vim.o.shiftwidth = 2
 vim.o.tabstop = 2
 vim.o.smarttab = true
+vim.o.wrap = false
+
+vim.o.shell = '/home/linuxbrew/.linuxbrew/bin/fish'
 
 -- vim.scriptencoding = 'utf-8'
 -- vim.opt.encoding = 'utf-8'
