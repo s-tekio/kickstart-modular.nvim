@@ -108,7 +108,7 @@ return {
         type = 'php',
         request = 'launch',
         name = 'Listen for Xdebug',
-        port = 9004,
+        port = vim.g.x_debug_port or 9004,
         -- For Docker
         pathMappings = {
           ['/app'] = vim.fn.getcwd(),
