@@ -161,8 +161,17 @@ return {
         intelephense = {
           settings = {
             intelephense = {
+              init_options = {
+                licenseKey = os.getenv 'INTELEPHENSE_LICENSE' or '',
+              },
+              -- environment = {
+              --   includePaths = { 'vendor/**' },
+              -- },
               files = {
                 maxsize = 5000000,
+              },
+              format = {
+                enable = false, -- php-cs-fixer will be used
               },
             },
           },
@@ -180,6 +189,14 @@ return {
               },
             },
           },
+          ---@diagnostic disable-next-line:unused-local
+          on_attach = function(client, bufnr)
+            -- Disable some capabilities (intelephense used)
+            client.server_capabilities.renameProvider = false
+            client.server_capabilities.documentFormattingProvider = false
+            client.server_capabilities.documentRangeFormattingProvider = false
+            -- client.server_capabilities.definitionProvider = false
+          end,
         },
       }
 

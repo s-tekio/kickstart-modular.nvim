@@ -70,16 +70,16 @@ return {
       map('n', '<leader>ff', picker.files, { desc = 'Search [F]iles' })
       map('n', '<leader>fp', picker.pickers, { desc = 'Search Select Picker' })
       map({ 'n', 'v' }, '<leader>fw', picker.grep_word, { desc = 'Search current [W]ord' })
-      map('n', '<leader>fs', picker.grep, { desc = '[S]earch text' })
+      map('n', '<leader>fs', function() picker.grep { args = { '--smart-case' } } end, { desc = '[S]earch text (smart case)' })
       map('n', '<leader>fd', picker.diagnostics, { desc = 'Search [D]iagnostics' })
       map('n', '<leader>fr', picker.resume, { desc = 'Search [R]esume' })
       map('n', '<leader>f.', picker.recent, { desc = 'Search Recent Files' })
       map('n', '<leader>fc', picker.commands, { desc = 'Search [C]ommands' })
-      map('n', '<leader>ft', function() picker.todo_comments({ cwd = _G.get_git_root() }) end, { desc = 'Todo Comments (Project Root)' })
+      map('n', '<leader>ft', function() picker.todo_comments { cwd = _G.get_git_root() } end, { desc = 'Todo Comments (Project Root)' })
       map(
         'n',
         '<leader>fT',
-        function() picker.todo_comments({ cwd = _G.get_git_root(), keywords = { 'TODO', 'FIX', 'FIXME' } }) end,
+        function() picker.todo_comments { cwd = _G.get_git_root(), keywords = { 'TODO', 'FIX', 'FIXME' } } end,
         { desc = 'Todo/Fix/Fixme (Project Root)' }
       )
       map('n', '<leader><leader>', picker.buffers, { desc = '[ ] Find existing buffers' })
