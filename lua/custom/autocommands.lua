@@ -3,8 +3,9 @@
 --
 
 -- mappings
+vim.keymap.set('n', '<leader>m', '', { desc = '+My Commands' })
 vim.keymap.set('n', '<leader>mm', ':MyTools<CR>', { desc = 'My Custom Tools Menu' })
-vim.keymap.set('n', '<leader>ra', ':PhpActions<CR>', { desc = '[R]efactor [A]ctions (Phpactor)' })
+vim.keymap.set('n', '<leader>mra', ':PhpActions<CR>', { desc = '[R]efactor [A]ctions (Phpactor)' })
 
 -- local variables
 local my_custom_commands = {
