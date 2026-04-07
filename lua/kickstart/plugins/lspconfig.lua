@@ -112,13 +112,10 @@ return {
           --
           -- This may be unwanted, since they displace some of your code
           if client and client:supports_method('textDocument/inlayHint', event.buf) then
-            map('<leader>th', function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf }) end, '[T]oggle Inlay [H]ints')
+            map('<leader>lth', function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf }) end, '[T]oggle Inlay [H]ints')
           end
 
-          if client and client.name == 'phpactor' then
-            map('<leader>pm', ':PhpactorContextMenu<CR>', '[P]hpactor [M]enu')
-            map('<leader>pn', ':PhpactorClassNew<CR>', '[P]hpactor [N]ew Class')
-          end
+          map('<leader>lr', '<cmd>LspRestart<CR>', '[L]SP [R]estart')
         end,
       })
 

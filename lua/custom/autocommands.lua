@@ -38,6 +38,16 @@ local phpactor_actions = {
     desc = 'Imports class or asks to define an alias if already imported',
   },
   {
+    title = 'Import Missing Classes',
+    cmd = 'PhpactorImportMissingClasses',
+    desc = 'Imports missing classes',
+  },
+  {
+    title = 'Extract Method',
+    cmd = 'PhpactorExtractMethod',
+    desc = 'Extract selected text to method',
+  },
+  {
     title = 'Class New',
     cmd = 'PhpactorClassNew',
     desc = 'Create a new class following PSR-4 standard',

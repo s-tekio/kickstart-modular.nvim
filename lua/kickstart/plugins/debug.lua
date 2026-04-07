@@ -25,14 +25,14 @@ return {
   },
   keys = {
     -- Basic debugging keymaps, feel free to change to your liking!
-    { '<leader>ds', function() require('dap').continue() end, desc = '[D]ebug: [S]tart/Continue (F5)' },
-    { '<leader>di', function() require('dap').step_into() end, desc = '[D]ebug: Step [I]nto (F7)' },
-    { '<leader>dn', function() require('dap').step_over() end, desc = '[D]ebug: Step [N]ext (F8)' },
-    { '<leader>do', function() require('dap').step_out() end, desc = '[D]ebug: Step [O]ut' },
+    { '<leader>ds', function() require('dap').continue() end, desc = 'Debug: [S]tart/Continue (F5)' },
+    { '<leader>di', function() require('dap').step_into() end, desc = 'Debug: Step [I]nto (F7)' },
+    { '<leader>dn', function() require('dap').step_over() end, desc = 'Debug: Step [N]ext (F8)' },
+    { '<leader>do', function() require('dap').step_out() end, desc = 'Debug: Step [O]ut' },
     { '<leader>db', function() require('dap').toggle_breakpoint() end, desc = 'Debug: Toggle Breakpoint' },
     { '<leader>dB', function() require('dap').set_breakpoint(vim.fn.input 'Breakpoint condition: ') end, desc = 'Debug: Set Breakpoint' },
     -- Toggle to see last session result. Without this, you can't see session output in case of unhandled exception.
-    { '<leader>dd', function() require('dapui').toggle() end, desc = '[D]ebug: See last [S]ession result.' },
+    { '<leader>dd', function() require('dapui').toggle() end, desc = 'Debug: See last [S]ession result.' },
   },
   config = function()
     local dap = require 'dap'

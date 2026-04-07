@@ -3,6 +3,9 @@
 -- NOTE: You can change these options as you wish!
 --  For more options, you can see `:help option-list`
 
+vim.g.autoformat = true
+vim.b.autoformat = true
+
 -- Make line numbers default
 vim.o.number = true
 vim.o.relativenumber = true

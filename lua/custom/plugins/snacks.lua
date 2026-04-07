@@ -106,6 +106,25 @@ return {
         map('n', '<leader>gg', function() Snacks.lazygit { cwd = _G.get_git_root() } end, { desc = 'Lazygit (Root Dir)' })
         map('n', '<leader>gG', function() Snacks.lazygit() end, { desc = 'Lazygit (cwd)' })
       end
+
+      -- [[ Toggles ]]
+
+      -- Global Toggle
+      Snacks.toggle({
+        name = 'Auto Format (Global)',
+        get = function() return vim.g.autoformat ~= false end,
+        set = function(state) vim.g.autoformat = state end,
+      }):map '<leader>uf'
+
+      -- Buffer Toggle
+      Snacks.toggle({
+        name = 'Auto Format (Buffer)',
+        get = function() return vim.b.autoformat ~= false end,
+        set = function(state) vim.b.autoformat = state end,
+      }):map '<leader>uF'
+
+      -- Other useful toggles (Optional, but very "LazyVim style")
+      Snacks.toggle.diagnostics():map '<leader>ud'
     end,
   },
 }

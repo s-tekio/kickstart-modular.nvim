@@ -28,10 +28,14 @@ return {
 
       -- Document existing key chains
       spec = {
-        { '<leader>s', group = '[S]earch', mode = { 'n', 'v' } },
-        { '<leader>t', group = '[T]oggle' },
-        { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } }, -- Enable gitsigns recommended keymaps first
-        { 'gr', group = 'LSP Actions', mode = { 'n' } },
+        { '<leader>d', group = '[D]ebug', mode = { 'n' } },
+        { '<leader>s', group = '[S]earch', mode = { 'n' } },
+        { '<leader>f', group = '[F]uzzy search', mode = { 'n', 'v' } },
+        { '<leader>t', group = '[T]esting' },
+        { '<leader>g', group = '[G]it' },
+        { '<leader>gh', group = '[G]it [H]unk', mode = { 'n', 'v' } },
+        { '<leader>l', group = 'LSP Actions', mode = { 'n' } },
+        { '<leader>u', group = 'ui', mode = { 'n' } },
       },
     },
   },
