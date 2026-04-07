@@ -13,13 +13,13 @@ local project_to_service = {
 local function find_docker_compose(project_root)
   -- For perfomance reasons, always try to look for the file in root or /docker folder
   local compose_path = vim.fs.find('docker-compose.yml', { path = project_root })[1]
-                  or vim.fs.find('docker-compose.yml', { path = project_root .. '/docker' })[1]
+    or vim.fs.find('docker-compose.yml', { path = project_root .. '/docker' })[1]
 
   if not compose_path then
     local find_opts = {
       path = project_root,
       upward = false, -- Buscamos hacia dentro del proyecto
-      limit = 1
+      limit = 1,
     }
     compose_path = vim.fs.find({ 'docker-compose.yml', 'docker-compose.yaml' }, find_opts)[1]
   end
@@ -61,13 +61,15 @@ return {
         vim.schedule(function() vim.notify("Using '" .. service .. "' as Docker container's name. If it fails, use :PhpService", vim.log.levels.WARN) end)
       end
 
-      if compose_path == nil then
-        compose_path = find_docker_compose(project_root)
-      end
+      if compose_path == nil then compose_path = find_docker_compose(project_root) end
 
-      -- 1. DETECCIÓN DEL XML (Priorizamos functional-tests si existe)
+      -- 1. DETECCIÓN DEL XML (Priorizamos functional-tests | unit-tests si existen)
       local config_file = 'phpunit.xml'
-      if vim.fn.filereadable(project_root .. '/tests/functional-tests.xml') == 1 then config_file = 'tests/functional-tests.xml' end
+      if vim.fn.filereadable(project_root .. '/tests/functional-tests.xml') == 1 then
+        config_file = 'tests/functional-tests.xml'
+      elseif vim.fn.filereadable(project_root .. '/tests/unit-tests.xml') == 1 then
+        config_file = 'tests/unit-tests.xml'
+      end
 
       -- 2. LIMPIEZA DE RUTA (Extraemos solo lo relativo a partir de tests/ o src/)
       local relative_path = cmd:match '(tests/[^%s:]+)' or cmd:match '(src/[^%s:]+)'
