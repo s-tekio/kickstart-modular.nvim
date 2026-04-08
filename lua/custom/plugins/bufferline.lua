@@ -111,7 +111,9 @@ return {
     map('n', '<A-h>', '<cmd>BufferLineMovePrev<cr>', { desc = 'Move Buffer Left' })
 
     -- "Pick" (Salto directo con una tecla)
-    map('n', '<leader>bp', '<cmd>BufferLinePick<cr>', { desc = 'Buffer Pick' })
+    map('n', '<leader>bk', '<cmd>BufferLinePick<cr>', { desc = 'Buffer Pick' })
+    -- "Pin"
+    map('n', '<leader>bp', '<cmd>BufferLineTogglePin<cr>', { desc = 'Buffer Toggle Pin' })
 
     -- Cerrar buffers (usando snacks para no romper el layout si es posible)
     map('n', '<leader>bd', function() Snacks.bufdelete() end, { desc = 'Delete Buffer' })

@@ -109,5 +109,8 @@ require 'lazy-plugins'
 require 'custom.autocommands'
 require 'custom.utils'
 
+-- Add Mason binaries to NVIM's PATH before LSPs are loaded
+vim.env.PATH = vim.fn.stdpath 'data' .. '/mason/bin' .. ':' .. vim.env.PATH
+
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et

@@ -156,19 +156,22 @@ return {
         },
 
         intelephense = {
+          init_options = {
+            licenceKey = os.getenv 'INTELEPHENSE_LICENSE' or '',
+            storagePath = vim.fn.stdpath 'cache' .. '/intelephense',
+          },
           settings = {
             intelephense = {
-              init_options = {
-                licenseKey = os.getenv 'INTELEPHENSE_LICENSE' or '',
-              },
-              -- environment = {
-              --   includePaths = { 'vendor/**' },
-              -- },
               files = {
                 maxsize = 5000000,
               },
               format = {
-                enable = false, -- php-cs-fixer will be used
+                enable = false,
+              },
+              -- Inlay hints (requiere licencia premium)
+              inlayHints = {
+                functionLikeReturnTypes = { enabled = true },
+                parameterNames = { enabled = 'all' },
               },
             },
           },
