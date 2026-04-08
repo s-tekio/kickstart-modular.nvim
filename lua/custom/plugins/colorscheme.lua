@@ -2,7 +2,29 @@
 ---@type LazySpec
 return {
   {
-		'folke/tokyonight.nvim',
+    'vague-theme/vague.nvim',
+    lazy = false, -- make sure we load this during startup if it is your main colorscheme
+    priority = 1000, -- make sure to load this before all the other plugins
+    config = function()
+      -- NOTE: you do not need to call setup if you don't want to.
+      require('vague').setup {
+        -- optional configuration here
+      }
+      -- vim.cmd 'colorscheme vague'
+    end,
+  },
+  {
+    'nickkadutskyi/jb.nvim',
+    lazy = false,
+    priority = 1000,
+    opts = {},
+    config = function()
+      -- require('jb').setup { transparent = true }
+      vim.cmd 'colorscheme jb'
+    end,
+  },
+  {
+    'folke/tokyonight.nvim',
     priority = 1000,
     lazy = false,
     config = function()
@@ -15,33 +37,21 @@ return {
       -- vim.cmd.colorscheme 'tokyonight-night'
     end,
   },
-	{
-		"vague-theme/vague.nvim",
-		lazy = false, -- make sure we load this during startup if it is your main colorscheme
-		priority = 1000, -- make sure to load this before all the other plugins
-		config = function()
-			-- NOTE: you do not need to call setup if you don't want to.
-			require("vague").setup({
-				-- optional configuration here
-			})
-			vim.cmd("colorscheme vague")
-		end
-	},
   {
-    "rose-pine/neovim",
+    'rose-pine/neovim',
     lazy = false,
-    name = "rose-pine",
+    name = 'rose-pine',
     config = function()
       -- vim.cmd("colorscheme rose-pine")
-    end
+    end,
   },
   {
-    "webhooked/kanso.nvim",
+    'webhooked/kanso.nvim',
     lazy = false,
     priority = 1000,
     config = function()
       -- vim.cmd("colorscheme kanso")
-    end
-  }
+    end,
+  },
 }
 -- vim: ts=2 sts=2 sw=2 et
