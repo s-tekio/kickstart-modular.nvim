@@ -10,7 +10,7 @@ return {
       require('vague').setup {
         -- optional configuration here
       }
-      -- vim.cmd 'colorscheme vague'
+      vim.cmd 'colorscheme vague'
     end,
   },
   {
@@ -19,8 +19,14 @@ return {
     priority = 1000,
     opts = {},
     config = function()
-      -- require('jb').setup { transparent = true }
-      vim.cmd 'colorscheme jb'
+      require('jb').setup {
+        snacks = {
+          picker = {
+            enabled = true,
+          },
+        },
+      }
+      -- vim.cmd 'colorscheme jb'
     end,
   },
   {
@@ -51,6 +57,12 @@ return {
     priority = 1000,
     config = function()
       -- vim.cmd("colorscheme kanso")
+    end,
+  },
+  {
+    'askfiy/visual_studio_code',
+    config = function()
+      -- vim.cmd([[colorscheme visual_studio_code]])
     end,
   },
 }
