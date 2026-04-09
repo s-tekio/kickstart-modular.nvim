@@ -168,6 +168,9 @@ return {
               format = {
                 enable = false,
               },
+              environment = {
+                includePaths = { 'vendor' },
+              },
               -- Inlay hints (requiere licencia premium)
               inlayHints = {
                 functionLikeReturnTypes = { enabled = true },

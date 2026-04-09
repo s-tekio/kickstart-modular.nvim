@@ -62,6 +62,10 @@ return {
         mode = 'buffers', -- Use 'tabs' if you prefer real nvim tabs
         style_preset = require('bufferline').style_preset.default,
 
+        max_name_length = 100,
+        max_prefix_length = 100,
+        tab_size = 20,
+
         indicator = { style = 'icon', icon = '▎' },
         -- indicator = { style = 'underline' },
         separator_style = 'thin', -- 'slant' | 'slope' | 'thick' | 'thin'

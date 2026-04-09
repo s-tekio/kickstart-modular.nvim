@@ -95,7 +95,7 @@ return {
           map('n', 'gr', picker.lsp_references, { buffer = buf, desc = '[G]oto [R]eferences' })
           map('n', 'gI', picker.lsp_implementations, { buffer = buf, desc = '[G]oto [I]mplementation' })
           map('n', 'gd', picker.lsp_definitions, { buffer = buf, desc = '[G]oto [D]efinition' })
-          map('n', 'gO', picker.lsp_symbols, { buffer = buf, desc = 'Open Document Symbols' })
+          map('n', 'gs', picker.lsp_symbols, { buffer = buf, desc = 'Open Document Symbols' })
           map('n', 'gW', picker.lsp_workspace_symbols, { buffer = buf, desc = 'Open Workspace Symbols' })
           map('n', 'gy', picker.lsp_type_definitions, { buffer = buf, desc = '[G]oto T[y]pe Definition' })
         end,
