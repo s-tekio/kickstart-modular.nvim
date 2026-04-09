@@ -193,6 +193,7 @@ return {
           on_attach = function(client, bufnr)
             -- Disable some capabilities (intelephense used)
             -- client.server_capabilities.renameProvider = true
+            client.server_capabilities.completionProvider = nil
             client.server_capabilities.documentFormattingProvider = false
             client.server_capabilities.documentRangeFormattingProvider = false
             client.server_capabilities.definitionProvider = false
