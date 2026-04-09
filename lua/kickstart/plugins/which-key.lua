@@ -37,6 +37,7 @@ return {
         { '<leader>l', group = 'LSP Actions', mode = { 'n' } },
         { '<leader>u', group = 'ui', mode = { 'n' } },
         { '<leader>x', group = 'Trouble', mode = { 'n' } },
+        { '<leader>h', group = 'Harpoon', mode = { 'n' } },
       },
     },
   },
