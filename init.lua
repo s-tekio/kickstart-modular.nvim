@@ -93,6 +93,9 @@ vim.g.maplocalleader = ' '
 -- Set to true if you have a Nerd Font installed and selected in the terminal
 vim.g.have_nerd_font = true
 
+-- Add Mason binaries to NVIM's PATH before LSPs are loaded
+vim.env.PATH = vim.fn.stdpath 'data' .. '/mason/bin' .. ':' .. vim.env.PATH
+
 -- [[ Setting options ]]
 require 'options'
 require 'file-patterns'
@@ -108,9 +111,6 @@ require 'lazy-plugins'
 
 require 'custom.autocommands'
 require 'custom.utils'
-
--- Add Mason binaries to NVIM's PATH before LSPs are loaded
-vim.env.PATH = vim.fn.stdpath 'data' .. '/mason/bin' .. ':' .. vim.env.PATH
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et

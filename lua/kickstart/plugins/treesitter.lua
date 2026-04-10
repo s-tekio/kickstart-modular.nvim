@@ -1,3 +1,5 @@
+--- WARNING: old version for NVIM < 0.12
+---
 ---@module 'lazy'
 ---@type LazySpec
 return {

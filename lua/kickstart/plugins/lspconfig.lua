@@ -205,6 +205,20 @@ return {
             client.server_capabilities.referencesProvider = false
           end,
         },
+
+        -- Make sure to execute :TSInstall yaml
+        yamlls = {
+          settings = {
+            yaml = {
+              -- Enable this when 'b0o/SchemaStore.nvim' is installed
+              -- schemaStore = {
+              --   enable = false, -- Deshabilitamos el nativo para usar el plugin (es mejor)
+              --   url = '',
+              -- },
+              -- schemas = require('schemastore').yaml.schemas(),
+            },
+          },
+        },
       }
 
       -- Ensure the servers and tools above are installed
@@ -214,12 +228,23 @@ return {
       --    :Mason
       --
       -- You can press `g?` for help in this menu.
-      local ensure_installed = vim.tbl_keys(servers or {})
-      vim.list_extend(ensure_installed, {
+
+      -- Manual list for Mason
+      local ensure_installed = {
         'php-cs-fixer', -- Linter / formatter
         'phpstan', -- static analysis
         'php-debug-adapter', -- DAP
-      })
+      }
+
+      local lsp_name_exceptions = {
+        -- Add here names which key used in server doesn't match with what Mason expects
+        -- Example: Imagine 'my_ls' in mason is 'my-ls-server'.
+        -- Add here ['my_ls'] = true and maker sure to add 'my-ls-server' in ensure_installed table above
+      }
+
+      for server_name, _ in pairs(servers or {}) do
+        if not lsp_name_exceptions[server_name] then table.insert(ensure_installed, server_name) end
+      end
 
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
