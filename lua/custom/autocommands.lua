@@ -5,7 +5,7 @@
 -- mappings
 vim.keymap.set('n', '<leader>m', '', { desc = '+My Commands' })
 vim.keymap.set('n', '<leader>mm', ':MyTools<CR>', { desc = 'My Custom Tools Menu' })
-vim.keymap.set('n', '<leader>mra', ':PhpActions<CR>', { desc = '[R]efactor [A]ctions (Phpactor)' })
+vim.keymap.set({ 'n', 'v' }, '<leader>mra', ':PhpActions<CR>', { desc = '[R]efactor [A]ctions (Phpactor)' })
 
 -- local variables
 local my_custom_commands = {
@@ -72,8 +72,11 @@ vim.api.nvim_create_user_command('MyTools', function()
   end)
 end, { desc = 'Open custom tools menu' })
 
-vim.api.nvim_create_user_command('PhpActions', function()
+vim.api.nvim_create_user_command('PhpActions', function(opts)
   local display_items = {}
+
+  local range = ''
+  if opts.range > 0 then range = opts.line1 .. ',' .. opts.line2 end
 
   for _, item in ipairs(phpactor_actions) do
     table.insert(display_items, string.format('%-15s │ %s', item.title, item.desc))
@@ -85,14 +88,16 @@ vim.api.nvim_create_user_command('PhpActions', function()
     if choice and idx then
       local command = phpactor_actions[idx].cmd
 
+      local full_command = range .. command
+
       -- We use pcall (protected call) to avoid breaking the UI if the command
       -- fails or if the user cancels the action.
-      local ok, err = pcall(function() vim.cmd(command) end)
+      local ok, err = pcall(function() vim.cmd(full_command) end)
 
       if not ok then vim.notify('Phpactor Error: ' .. tostring(err), vim.log.levels.ERROR) end
     end
   end)
-end, { desc = 'Open Phpactor refactor menu' })
+end, { range = true, desc = 'Open Phpactor refactor menu' })
 
 ----------------------------
 --- Commands Definitions ---
