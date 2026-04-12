@@ -32,11 +32,16 @@ return {
   'vim-test/vim-test',
   config = function()
     vim.g['test#strategy'] = 'neovim'
+    vim.g['test#php#phpunit#options'] = '--testdox'
+
     vim.cmd [[ let g:test#filename_modifier = ':.' ]]
 
     _G.docker_transform = function(cmd)
-      local path = vim.api.nvim_buf_get_name(0)
-      local composer_match = vim.fs.find({ 'composer.json' }, { path = path, upward = true })[1]
+      local current_buf_path = vim.api.nvim_buf_get_name(0)
+      -- CWD fallback when tests are executed from neo-tree
+      local lookup_path = (current_buf_path ~= '' and vim.bo.buftype == '') and current_buf_path or vim.fn.getcwd()
+
+      local composer_match = vim.fs.find({ 'composer.json' }, { path = lookup_path, upward = true })[1]
       if not composer_match then return cmd end
 
       local project_root = vim.fs.dirname(composer_match)
@@ -71,8 +76,8 @@ return {
         config_file = 'tests/unit-tests.xml'
       end
 
-      -- 2. LIMPIEZA DE RUTA (Extraemos solo lo relativo a partir de tests/ o src/)
-      local relative_path = cmd:match '(tests/[^%s:]+)' or cmd:match '(src/[^%s:]+)'
+      -- 2. LIMPIEZA DE RUTA (Extraemos solo lo relativo a partir de tests/ o src/, o capturamos el archivo si se pasó directamente)
+      local relative_path = cmd:match '(tests[^%s:#]*)' or cmd:match '(src[^%s:#]*)' or cmd:match '([^%s:#]+%.php)'
 
       -- 3. EXTRACCIÓN DEL FILTRO
       local filter = cmd:match '%-%-filter%s+([^%s]+)'
@@ -81,7 +86,7 @@ return {
       -- 4. RECONSTRUCCIÓN DEL COMANDO
       -- Importante: El flag -c va JUSTO antes de la ruta del archivo o al final de los flags
       local final_cmd = string.format(
-        'docker compose -f %s exec -i -w /app -e APP_ENV=test %s /app/vendor/bin/phpunit -c /app/%s %s %s',
+        'docker compose -f %s exec -i -w /app -e APP_ENV=test %s /app/vendor/bin/phpunit -c /app/%s %s --testdox --colors=always %s',
         compose_path,
         service,
         config_file,

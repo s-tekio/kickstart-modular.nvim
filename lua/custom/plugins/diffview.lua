@@ -33,9 +33,10 @@ return {
           vim.cmd('DiffviewOpen ' .. choice.name)
         end)
       end,
-      desc = 'Git: Diff against branch',
+      desc = 'Git: Diffview against branch',
     },
-    { '<leader>gD', '<cmd>DiffviewOpen<cr>', desc = 'Git: Diff working tree' },
-    { '<leader>gf', '<cmd>DiffviewFileHistory %<cr>', desc = 'Git: Diff [F]ile History' },
+    { '<leader>gD', '<cmd>DiffviewOpen<cr>', desc = 'Git: Diffview working tree' },
+    { '<leader>gC', '<cmd>DiffviewClose<cr>', desc = 'Git: Diffview Close' },
+    { '<leader>gf', '<cmd>DiffviewFileHistory %<cr>', desc = 'Git: Diffview [F]ile History' },
   },
 }
