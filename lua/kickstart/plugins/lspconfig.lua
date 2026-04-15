@@ -207,6 +207,8 @@ return {
             client.server_capabilities.implementationProvider = false
             client.server_capabilities.typeDefinitionProvider = false
             client.server_capabilities.referencesProvider = false
+            client.server_capabilities.documentSymbolProvider = false
+            client.server_capabilities.workspaceSymbolProvider = false
           end,
         },
 
