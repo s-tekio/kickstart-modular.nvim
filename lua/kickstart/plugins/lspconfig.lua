@@ -193,6 +193,9 @@ return {
               },
             },
           },
+          handlers = {
+            ['textDocument/publishDiagnostics'] = function() end, -- disable diagnostics
+          },
           ---@diagnostic disable-next-line:unused-local
           on_attach = function(client, bufnr)
             -- Disable some capabilities (intelephense used)
