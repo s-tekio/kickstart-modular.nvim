@@ -55,6 +55,9 @@ return {
             -- Launch snacks picker targeting that specific directory
             require('snacks').picker.grep {
               cwd = target_dir,
+              hidden = true,
+              ignored = true,
+              exclude = { '.git', 'node_modules' },
               args = { '--smart-case' },
               title = 'Grep in ' .. vim.fn.fnamemodify(target_dir, ':t'),
             }
