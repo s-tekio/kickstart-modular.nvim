@@ -63,11 +63,22 @@ return {
       end
 
       local picker = require('snacks').picker
+      local search_files = function()
+        local snacks = require 'snacks'
+        local opts = {}
+
+        local mode = vim.api.nvim_get_mode().mode
+        local is_visual = mode:match '^[vV]'
+
+        if is_visual then opts.search = snacks.picker.util.visual().text end
+
+        snacks.picker.files(opts)
+      end
 
       -- [[ Keymaps Estándar ]]
       map('n', '<leader>fh', picker.help, { desc = 'Search [H]elp' })
       map('n', '<leader>fk', picker.keymaps, { desc = 'Search [K]eymaps' })
-      map('n', '<leader>ff', picker.files, { desc = 'Search [F]iles' })
+      map({ 'n', 'x' }, '<leader>ff', search_files, { desc = 'Search [F]iles' })
       map('n', '<leader>fp', picker.pickers, { desc = 'Search Select Picker' })
       map({ 'n', 'v' }, '<leader>fw', picker.grep_word, { desc = 'Search current [W]ord' })
       map('n', '<leader>fs', function() picker.grep { args = { '--smart-case' } } end, { desc = '[S]earch text (smart case)' })
