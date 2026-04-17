@@ -1,7 +1,23 @@
 return {
   'sindrets/diffview.nvim',
   cmd = { 'DiffviewOpen', 'DiffviewFileHistory' },
-  opts = {},
+  opts = {
+    enhanced_diff_hl = true,
+    view = {
+      default = {
+        layout = 'diff2_vertical',
+        disable_diagnostics = false,
+      },
+      merge_tool = {
+        layout = 'diff3_horizontal',
+        disable_diagnostics = false,
+      },
+      file_history = {
+        layout = 'diff2_vertical',
+        disable_diagnostics = false,
+      },
+    },
+  },
   keys = {
     {
       '<leader>gd',
