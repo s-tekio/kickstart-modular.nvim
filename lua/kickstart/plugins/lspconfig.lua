@@ -231,6 +231,29 @@ return {
             },
           },
         },
+        html = {
+          filetypes = { 'html', 'twig', 'javascriptreact' },
+          root_markers = { '.env.local', 'symfony.lock', '.git', 'composer.json', 'package.json' },
+        },
+
+        -- CSS, SCSS, LESS
+        cssls = {
+          root_markers = { '.env.local', 'symfony.lock', '.git', 'composer.json', 'package.json' },
+        },
+
+        -- JavaScript / TypeScript
+        -- Usamos vtsls (sucesor de tsserver) o tsserver (ahora llamado ts_ls)
+        ts_ls = {
+          root_markers = { '.env.local', 'symfony.lock', '.git', 'composer.json', 'package.json' },
+          single_file_support = true,
+        },
+
+        -- Emmet (Opcional pero ALTAMENTE recomendado para HTML/Twig)
+        -- Te permite escribir div.container>ul>li y expandirlo con tab
+        emmet_ls = {
+          filetypes = { 'html', 'twig', 'css', 'sass', 'scss', 'less', 'javascriptreact' },
+          root_markers = { '.env.local', 'symfony.lock', '.git', 'composer.json', 'package.json' },
+        },
       }
 
       -- Ensure the servers and tools above are installed

@@ -96,6 +96,12 @@ vim.g.have_nerd_font = true
 -- Add Mason binaries to NVIM's PATH before LSPs are loaded
 vim.env.PATH = vim.fn.stdpath 'data' .. '/mason/bin' .. ':' .. vim.env.PATH
 
+vim.filetype.add {
+  extension = {
+    twig = 'html', -- O "twig" si usas un plugin específico de Twig
+  },
+}
+
 -- [[ Setting options ]]
 require 'options'
 require 'file-patterns'
