@@ -89,6 +89,12 @@ return {
 
           map('<leader>lr', '<cmd>lsp restart<CR>', '[L]SP [R]estart')
           map('<leader>li', '<cmd>checkhealth vim.lsp<CR>', '[L]SP [I]nfo')
+          -- map('<leader>ll', '<cmd>lua vim.cmd("tabnew " .. vim.lsp.get_log_path())<CR>', '[L]SP [L]og')
+          map('<leader>ll', '<cmd>LspLog<CR>', '[L]SP [L]og')
+
+          vim.api.nvim_create_user_command('LspLog', function() vim.cmd.tabnew { vim.lsp.log.get_filename() } end, {
+            desc = 'Opens the Nvim LSP client log.',
+          })
 
           -- The following two autocommands are used to highlight references of the
           -- word under your cursor when your cursor rests there for a little while.
@@ -126,7 +132,7 @@ return {
       ---@type table<string, vim.lsp.Config>
       local servers = {
         stylua = {}, -- Used to format Lua code
-
+        marksman = {}, -- for markdown
         -- Special Lua Config, as recommended by neovim help docs
         lua_ls = {
           on_init = function(client)
@@ -172,6 +178,7 @@ return {
               },
               environment = {
                 includePaths = { 'vendor' },
+                phpVersion = '8.2.28',
               },
               references = {
                 exclude = {},
@@ -269,6 +276,8 @@ return {
         'php-cs-fixer', -- Linter / formatter
         'phpstan', -- static analysis
         'php-debug-adapter', -- DAP
+        'marksman', -- markdown LSP
+        -- 'markdownlint-cli2', -- markdown Linter
       }
 
       local lsp_name_exceptions = {

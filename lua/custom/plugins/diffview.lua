@@ -5,7 +5,7 @@ return {
     enhanced_diff_hl = true,
     view = {
       default = {
-        layout = 'diff2_vertical',
+        layout = 'diff2_horizontal',
         disable_diagnostics = false,
       },
       merge_tool = {
@@ -13,7 +13,7 @@ return {
         disable_diagnostics = false,
       },
       file_history = {
-        layout = 'diff2_vertical',
+        layout = 'diff2_horizontal',
         disable_diagnostics = false,
       },
     },
