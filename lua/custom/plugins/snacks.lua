@@ -39,12 +39,12 @@ return {
             hidden = true, -- Ver archivos .env
             ignored = true, -- Ver archivos en .gitignore
             -- Excluimos manualmente lo que NO queremos ver nunca
-            exclude = { '.git', 'vendor', 'node_modules', '.phpunit.result.cache' },
+            exclude = { '.git', 'vendor', 'node_modules', '.phpunit.result.cache', '**/cache/**', '**/log/**', '**/logs/**' },
           },
           grep = {
             hidden = true,
             ignored = true,
-            exclude = { '.git', 'vendor', 'node_modules' },
+            exclude = { '.git', 'vendor', 'node_modules', '**/cache/**', '**/log/**', '**/logs/**' },
           },
         },
       },

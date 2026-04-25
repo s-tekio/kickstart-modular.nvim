@@ -57,7 +57,7 @@ return {
               cwd = target_dir,
               hidden = true,
               ignored = true,
-              exclude = { '.git', 'node_modules' },
+              exclude = { '.git', 'node_modules', '**/cache/**', '**/log/**', '**/logs/**' },
               args = { '--smart-case' },
               title = 'Grep in ' .. vim.fn.fnamemodify(target_dir, ':t'),
             }
