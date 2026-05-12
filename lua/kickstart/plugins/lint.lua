@@ -10,6 +10,8 @@ return {
     lint.linters_by_ft = {
       -- markdown = { 'markdownlint-cli2' },
       php = { 'phpstan' },
+      sh = { 'dotenv_linter' },
+      env = { 'dotenv_linter' },
     }
 
     -- local mc2 = lint.linters['markdownlint-cli2']
@@ -29,6 +31,17 @@ return {
       'analyze',
       '--error-format=json',
       '--no-progress',
+      '--memory-limit=1G',
+    }
+
+    local dotenv = lint.linters.dotenv_linter
+    dotenv.args = {
+      'check',
+      '--quiet',
+      '--ignore-checks',
+      'UnorderedKey',
+      '--ignore-checks',
+      'QuoteCharacter',
     }
 
     -- To allow other plugins to add linters to require('lint').linters_by_ft,
@@ -65,14 +78,32 @@ return {
 
     -- Create autocommand which carries out the actual linting
     -- on the specified events.
+
+    -- timeout for debounce control
+    local lint_timer = vim.loop.new_timer()
     local lint_augroup = vim.api.nvim_create_augroup('lint', { clear = true })
-    vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'InsertLeave' }, {
+
+    vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost' }, {
       group = lint_augroup,
       callback = function()
+        if lint_timer then
+          -- stop timer if exists
+          lint_timer:stop()
+          -- wait 1000ms (1 sec) before executing again
+          lint_timer:start(
+            1000,
+            0,
+            vim.schedule_wrap(function()
+              if vim.bo.modifiable then lint.try_lint() end
+            end)
+          )
+        end
+
+        -- version without debounce
         -- Only run the linter in buffers that you can modify in order to
         -- avoid superfluous noise, notably within the handy LSP pop-ups that
         -- describe the hovered symbol using Markdown.
-        if vim.bo.modifiable then lint.try_lint() end
+        -- if vim.bo.modifiable then lint.try_lint() end
       end,
     })
   end,

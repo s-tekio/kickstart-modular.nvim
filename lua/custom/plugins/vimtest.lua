@@ -24,8 +24,7 @@ local function find_docker_compose(project_root)
     compose_path = vim.fs.find({ 'docker-compose.yml', 'docker-compose.yaml' }, find_opts)[1]
   end
 
-  -- compose_path or fallback
-  return compose_path or 'docker-compose.yml'
+  return compose_path
 end
 
 return {
@@ -51,6 +50,7 @@ return {
       local service = nil
       local docker_network_root_path = ''
       local compose_path = nil
+      local warning_message = ''
 
       if project_to_service[project_name] then
         -- Alfred microservice's structure
@@ -63,7 +63,7 @@ return {
       else
         -- Fallback to folder name + WARNING
         service = project_name
-        vim.schedule(function() vim.notify("Using '" .. service .. "' as Docker container's name. If it fails, use :PhpService", vim.log.levels.WARN) end)
+        warning_message = "Using '" .. service .. "' as Docker container's name. If it fails, use :PhpService"
       end
 
       if compose_path == nil then compose_path = find_docker_compose(project_root) end
@@ -85,14 +85,22 @@ return {
 
       -- 4. RECONSTRUCCIÓN DEL COMANDO
       -- Importante: El flag -c va JUSTO antes de la ruta del archivo o al final de los flags
-      local final_cmd = string.format(
-        'docker compose -f %s exec -i -w /app -e APP_ENV=test %s /app/vendor/bin/phpunit -c /app/%s %s --testdox --colors=always %s',
-        compose_path,
-        service,
-        config_file,
-        filter_arg,
-        relative_path or ''
-      )
+      local final_cmd
+      if compose_path == nil then
+        final_cmd =
+          string.format('cd %s && vendor/bin/phpunit -c %s %s --testdox --colors=always %s', project_root, config_file, filter_arg, relative_path or '')
+      else
+        if warning_message ~= '' then vim.schedule(function() vim.notify(warning_message, vim.log.levels.WARN) end) end
+
+        final_cmd = string.format(
+          'docker compose -f %s exec -i -w /app -e APP_ENV=test %s /app/vendor/bin/phpunit -c /app/%s %s --testdox --colors=always %s',
+          compose_path,
+          service,
+          config_file,
+          filter_arg,
+          relative_path or ''
+        )
+      end
 
       -- El truco del '#' para anular la basura que añada vim-test al final
       return final_cmd .. ' #'

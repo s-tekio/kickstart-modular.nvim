@@ -99,4 +99,10 @@ map('n', 'N', 'Nzzzv', { desc = 'Goes to the previous result on the search and k
 
 -- map('c', 'W', 'w')
 
+-- double 'q' for macro recording
+map('n', 'q', '<Nop>', { silent = true })
+map('n', 'qq', 'q', { desc = 'Macro Recording', noremap = true })
+
+map('n', ',wa', '<cmd>wall<CR>', { desc = 'Save all buffers' })
+
 map('n', 'Q', '<nop>')

@@ -222,6 +222,7 @@ return {
             client.server_capabilities.referencesProvider = false
             client.server_capabilities.documentSymbolProvider = false
             client.server_capabilities.workspaceSymbolProvider = false
+            client.server_capabilities.semanticTokensProvider = nil
           end,
         },
 
@@ -273,10 +274,11 @@ return {
 
       -- Manual list for Mason
       local ensure_installed = {
-        'php-cs-fixer', -- Linter / formatter
+        'php-cs-fixer', -- Linter / formatter (php)
         'phpstan', -- static analysis
         'php-debug-adapter', -- DAP
         'marksman', -- markdown LSP
+        'dotenv-linter', -- Linter (dotenv)
         -- 'markdownlint-cli2', -- markdown Linter
       }
 
