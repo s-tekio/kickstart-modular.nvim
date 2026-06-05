@@ -33,6 +33,14 @@ return {
     { '<leader>dB', function() require('dap').set_breakpoint(vim.fn.input 'Breakpoint condition: ') end, desc = 'Debug: Set Breakpoint' },
     -- Toggle to see last session result. Without this, you can't see session output in case of unhandled exception.
     { '<leader>dd', function() require('dapui').toggle() end, desc = 'Debug: See last [S]ession result.' },
+    {
+      '<leader>dx',
+      function()
+        require('dap').terminate()
+        require('dapui').close()
+      end,
+      desc = 'Debug: [X] Stop / Terminate Session',
+    },
   },
   config = function()
     local dap = require 'dap'
@@ -90,9 +98,11 @@ return {
       vim.fn.sign_define(tp, { text = icon, texthl = hl, numhl = hl })
     end
 
-    dap.listeners.after.event_initialized['dapui_config'] = dapui.open
-    dap.listeners.before.event_terminated['dapui_config'] = dapui.close
-    dap.listeners.before.event_exited['dapui_config'] = dapui.close
+    dap.listeners.before.attach.dapui_config = function() dapui.open() end
+    dap.listeners.before.launch.dapui_config = function() dapui.open() end
+    dap.listeners.before.event_terminated.dapui_config = function() dapui.close() end
+    dap.listeners.before.event_exited.dapui_config = function() dapui.close() end
+    dap.listeners.before.event_disconnected.dapui_config = function() dapui.close() end
 
     require('nvim-dap-virtual-text').setup()
 

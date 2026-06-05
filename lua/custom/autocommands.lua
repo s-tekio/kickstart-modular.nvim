@@ -53,6 +53,11 @@ local phpactor_actions = {
     desc = 'Extract selected text to variable',
   },
   {
+    title = 'Extract Constant',
+    cmd = 'PhpactorExtractConstant',
+    desc = 'Extract selected text to constant',
+  },
+  {
     title = 'Class New',
     cmd = 'PhpactorClassNew',
     desc = 'Create a new class following PSR-4 standard',
