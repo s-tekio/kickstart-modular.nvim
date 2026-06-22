@@ -8,6 +8,7 @@ return {
     config = function()
       -- NOTE: you do not need to call setup if you don't want to.
       require('vague').setup {
+        transparent = true,
         -- optional configuration here
       }
       -- vim.cmd 'colorscheme vague'
@@ -55,7 +56,12 @@ return {
     'webhooked/kanso.nvim',
     lazy = false,
     priority = 1000,
-    config = function() vim.cmd 'colorscheme kanso-ink' end,
+    config = function()
+      require('kanso').setup {
+        transparent = true,
+      }
+      vim.cmd 'colorscheme kanso-ink'
+    end,
   },
   {
     'askfiy/visual_studio_code',

@@ -120,9 +120,9 @@ return {
     map('n', '<S-l>', '<cmd>BufferLineCycleNext<cr>', { desc = 'Next Buffer' })
     map('n', '<S-h>', '<cmd>BufferLineCyclePrev<cr>', { desc = 'Prev Buffer' })
 
-    -- Move buffers position (Alt + L/H)
-    map('n', '<A-l>', '<cmd>BufferLineMoveNext<cr>', { desc = 'Move Buffer Right' })
-    map('n', '<A-h>', '<cmd>BufferLineMovePrev<cr>', { desc = 'Move Buffer Left' })
+    -- Move buffers position (Alt + Shift + J/K)
+    map('n', '<A-S-l>', '<cmd>BufferLineMoveNext<cr>', { desc = 'Move Buffer Right' })
+    map('n', '<A-S-h>', '<cmd>BufferLineMovePrev<cr>', { desc = 'Move Buffer Left' })
 
     -- "Pick" (Direct jump with a key)
     map('n', '<leader>bk', '<cmd>BufferLinePick<cr>', { desc = 'Buffer Pick' })
