@@ -29,7 +29,7 @@ map('n', ',q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix l
 -- is not what someone will guess without a bit more experience.
 -- map('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 -- Workaround mapping for edge cases (like Claude Code: when pressing Esc while thinking, it stops the process)
-map('t', '<S-Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
+map('t', '<C-Space>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
 -- TIP: Disable arrow keys in normal mode
 -- map('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')

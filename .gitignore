@@ -12,3 +12,8 @@ spell/
 # lazy-lock.json
 
 .DS_Store
+
+###> AI-tools ###
+.gga
+.atl
+###< AI-tools ###
