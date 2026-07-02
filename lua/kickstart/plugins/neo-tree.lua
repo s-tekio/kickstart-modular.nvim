@@ -25,6 +25,7 @@ return {
         mappings = {
           ['\\'] = 'close_window',
           ['<leader>tt'] = {
+            desc = 'run_tests_in_folder',
             function(state)
               local node = state.tree:get_node()
               if node == nil then return end
@@ -38,9 +39,9 @@ return {
               -- Ahora llamamos a TestFile con la ruta ya limpia
               vim.api.nvim_command('TestFile ' .. relative_path)
             end,
-            desc = 'run_tests_in_folder',
           },
           ['<leader>fs'] = {
+            desc = 'search_in_folder',
             function(state)
               local node = state.tree:get_node()
               if node == nil then return end
@@ -66,7 +67,6 @@ return {
                 title = 'Grep in ' .. vim.fn.fnamemodify(target_dir, ':t'),
               }
             end,
-            desc = 'search_in_folder',
           },
         },
       },

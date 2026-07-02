@@ -41,6 +41,12 @@ return {
               color = { fg = '#ff9e64', gui = 'bold' },
             },
           },
+          lualine_z = {
+            {
+              -- Show the currently connected OpenCode server and its status
+              require('opencode').statusline,
+            },
+          },
         },
       }
 
