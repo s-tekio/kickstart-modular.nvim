@@ -69,7 +69,7 @@ return {
       if compose_path == nil then compose_path = find_docker_compose(project_root) end
 
       -- 1. DETECCIÓN DEL XML (Priorizamos functional-tests | unit-tests si existen)
-      local config_file = 'phpunit.xml'
+      local config_file = 'tests/phpunit.xml'
       if vim.fn.filereadable(project_root .. '/tests/functional-tests.xml') == 1 then
         config_file = 'tests/functional-tests.xml'
       elseif vim.fn.filereadable(project_root .. '/tests/unit-tests.xml') == 1 then
