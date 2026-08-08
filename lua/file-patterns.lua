@@ -1,9 +1,11 @@
 vim.filetype.add {
-	-- NOTE: the 3 extension, filename and pattern are configured for a performance reason.
-	-- Neovim follows this order to look for the match. REGEX can be "expensive" in performance,
-	-- so it's better to use it as a 'fallback' option
+  -- NOTE: the 3 extension, filename and pattern are configured for a performance reason.
+  -- Neovim follows this order to look for the match. REGEX can be "expensive" in performance,
+  -- so it's better to use it as a 'fallback' option
   extension = {
     env = 'sh', -- :TSInstall bash if 'sh' isn't working by default
+    tf = 'terraform',
+    tfvars = 'terraform',
   },
   filename = {
     ['.env'] = 'sh',

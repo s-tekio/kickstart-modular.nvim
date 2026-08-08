@@ -22,6 +22,7 @@ return {
         'markdown_inline',
         'php',
         'query',
+        'terraform',
         'vim',
         'vimdoc',
         'yaml',

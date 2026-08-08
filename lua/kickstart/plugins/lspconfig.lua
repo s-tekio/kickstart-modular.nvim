@@ -262,6 +262,7 @@ return {
           filetypes = { 'html', 'twig', 'css', 'sass', 'scss', 'less', 'javascriptreact' },
           root_markers = { '.env.local', 'symfony.lock', '.git', 'composer.json', 'package.json' },
         },
+        terraformls = {},
       }
 
       -- Ensure the servers and tools above are installed
