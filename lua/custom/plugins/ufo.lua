@@ -9,12 +9,22 @@ return {
     vim.o.foldenable = true
   end,
   config = function()
-    require('ufo').setup()
+    local ufo = require 'ufo'
 
-    vim.keymap.set('n', '<A-->', '<cmd>foldclose<CR>', { desc = 'Close fold' })
-    vim.keymap.set('n', '<A-+>', '<cmd>foldopen<CR>', { desc = 'Open fold' })
+    ufo.setup {
+      provider_selector = function(bufnr, filetype, buftype) return { 'lsp', 'indent' } end,
+    }
 
-    -- vim.keymap.set('n', 'zM', require('ufo').closeAllFolds, { desc = 'Close all folds' })
-    -- vim.keymap.set('n', 'zR', require('ufo').openAllFolds, { desc = 'Open all folds' })
+    vim.keymap.set('n', 'zo', '<cmd>foldopen<CR>', { desc = 'Open fold under cursor (ufo)' })
+    vim.keymap.set('n', 'zc', '<cmd>foldclose<CR>', { desc = 'Close fold under cursor (ufo)' })
+
+    vim.keymap.set('n', 'zR', ufo.openAllFolds, { desc = 'Open all folds (ufo)' })
+    vim.keymap.set('n', 'zM', ufo.closeAllFolds, { desc = 'Close all folds (ufo)' })
+
+    -- Peek fold o LSP Hover:
+    vim.keymap.set('n', 'K', function()
+      local winid = ufo.peekFoldedLinesUnderCursor()
+      if not winid then vim.lsp.buf.hover() end
+    end, { desc = 'Peek fold (ufo) or Hover LSP' })
   end,
 }
