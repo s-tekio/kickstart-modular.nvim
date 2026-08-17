@@ -47,12 +47,12 @@ map('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 map('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
 -- Window resize (Vertical)
-map('n', '<M-Up>', ':resize +2<CR>', { desc = 'Increase window height' })
-map('n', '<M-Down>', ':resize -2<CR>', { desc = 'Decrease window height' })
+map('n', '<C-Up>', ':resize +2<CR>', { desc = 'Increase window height' })
+map('n', '<C-Down>', ':resize -2<CR>', { desc = 'Decrease window height' })
 
 -- Window resize (Horizontal)
-map('n', '<M-Left>', ':vertical resize -2<CR>', { desc = 'Decrease window width' })
-map('n', '<M-Right>', ':vertical resize +2<CR>', { desc = 'Increase window width' })
+map('n', '<C-Left>', ':vertical resize -2<CR>', { desc = 'Decrease window width' })
+map('n', '<C-Right>', ':vertical resize +2<CR>', { desc = 'Increase window width' })
 -- map('n', 'H', ':tabprevious<CR>', { desc = 'Previous tab' })
 -- map('n', 'L', ':tabnext<CR>', { desc = 'Next tab' })
 
