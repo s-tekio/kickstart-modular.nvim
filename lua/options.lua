@@ -76,7 +76,7 @@ vim.o.expandtab = true
 vim.o.smarttab = true
 vim.o.wrap = false
 
-vim.o.shell = '/home/linuxbrew/.linuxbrew/bin/fish'
+vim.o.shell = '/usr/bin/fish'
 
 -- vim.scriptencoding = 'utf-8'
 -- vim.opt.encoding = 'utf-8'

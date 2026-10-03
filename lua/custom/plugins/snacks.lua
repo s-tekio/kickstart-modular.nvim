@@ -140,7 +140,14 @@ return {
         -- 1. Find exact matches using 'fd'
         -- On Debian/Ubuntu, fd-find installs as 'fdfind' to avoid conflict with fdclone
         local fd_cmd = vim.fn.executable 'fdfind' == 1 and 'fdfind' or 'fd'
-        local results = vim.fn.systemlist(string.format("%s --max-depth 20 --glob '**/%s' .", fd_cmd, target_filename))
+        local results = vim.fn.systemlist {
+          fd_cmd,
+          '--max-depth',
+          '20',
+          '--glob',
+          target_filename,
+          '.',
+        }
 
         -- 2. Fallback to 'git ls-files' if fd fails
         if #results == 0 or (results[1] and results[1]:match '^error:') then

@@ -31,6 +31,7 @@ return {
         { '<leader>d', group = '[D]ebug', mode = { 'n' } },
         { '<leader>s', group = '[S]earch', mode = { 'n' } },
         { '<leader>f', group = '[F]uzzy search', mode = { 'n', 'v' } },
+        { '<leader>p', group = '[P]i', mode = { 'n', 'v' } },
         { '<leader>t', group = '[T]esting' },
         { '<leader>g', group = '[G]it' },
         { '<leader>gh', group = '[G]it [H]unk', mode = { 'n', 'v' } },
