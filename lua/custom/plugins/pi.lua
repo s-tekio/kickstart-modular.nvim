@@ -11,13 +11,13 @@ return {
 
       local map = vim.keymap.set
 
-      map({ 'n', 'v' }, '<leader>po', ':Pi<CR>', { desc = 'Pi: Open Pi' })
-      map({ 'n', 'v' }, '<leader>pp', ':PiSend<CR>', { desc = 'Pi: Diálogo interactivo' })
-      map('n', '<leader>pb', ':PiSendBuffer<CR>', { desc = 'Pi: Enviar búfer completo' })
-      map('n', '<leader>pf', ':PiSendFile<CR>', { desc = 'Pi: Enviar búfer completo' })
-      map('v', '<leader>ps', ':PiSendSelection<CR>', { desc = 'Pi: Enviar selección visual' })
-      map('n', '<leader>pt', ':PiPing<CR>', { desc = 'Pi: Verificar conexión (Ping)' })
-      map('n', '<leader>pl', ':PiSessions<CR>', { desc = 'Pi: Listar/Cambiar sesiones' })
+      map({ 'n', 'v' }, '<leader>po', ':Pi<CR>', { desc = 'Pi: [O]pen Pi' })
+      map({ 'n', 'v' }, '<leader>pp', ':PiSend<CR>', { desc = 'Pi: Send interactive Dialog' })
+      map('n', '<leader>pb', ':PiSendBuffer<CR>', { desc = 'Pi: Send [B]uffer' })
+      map('n', '<leader>pf', ':PiSendFile<CR>', { desc = 'Pi: Send [F]ile' })
+      map('v', '<leader>ps', ':PiSendSelection<CR>', { desc = 'Pi: Send [S]election' })
+      map('n', '<leader>pt', ':PiPing<CR>', { desc = 'Pi: Verify connection (Ping)' })
+      map('n', '<leader>pl', ':PiSessions<CR>', { desc = 'Pi: [L]ist sessions' })
     end,
   },
 }
