@@ -76,7 +76,8 @@ vim.o.expandtab = true
 vim.o.smarttab = true
 vim.o.wrap = false
 
-vim.o.shell = '/usr/bin/fish'
+local fish = vim.fn.exepath 'fish'
+if fish ~= '' then vim.o.shell = fish end
 
 -- vim.scriptencoding = 'utf-8'
 -- vim.opt.encoding = 'utf-8'
