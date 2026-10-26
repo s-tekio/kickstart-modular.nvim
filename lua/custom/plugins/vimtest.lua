@@ -74,6 +74,8 @@ return {
         config_file = 'tests/phpunit.xml'
       elseif vim.fn.filereadable(project_root .. '/phpunit.dist.xml') == 1 then
         config_file = 'phpunit.dist.xml'
+      elseif vim.fn.filereadable(project_root .. '/phpunit.xml.dist') == 1 then
+        config_file = 'phpunit.xml.dist'
       elseif vim.fn.filereadable(project_root .. '/tests/functional-tests.xml') == 1 then
         config_file = 'tests/functional-tests.xml'
       elseif vim.fn.filereadable(project_root .. '/tests/unit-tests.xml') == 1 then
