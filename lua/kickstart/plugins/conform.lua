@@ -36,6 +36,20 @@ return {
       formatters_by_ft = {
         lua = { 'stylua' },
         php = { 'php_cs_fixer' },
+        -- Web stack: Prettier is the project's formatter and also sorts Tailwind classes through
+        -- prettier-plugin-tailwindcss. conform prefers `node_modules/.bin/prettier`, so each
+        -- project is formatted with its own Prettier version and plugins.
+        javascript = { 'prettier' },
+        javascriptreact = { 'prettier' },
+        typescript = { 'prettier' },
+        typescriptreact = { 'prettier' },
+        css = { 'prettier' },
+        scss = { 'prettier' },
+        html = { 'prettier' },
+        json = { 'prettier' },
+        jsonc = { 'prettier' },
+        yaml = { 'prettier' },
+        markdown = { 'prettier' },
       },
       formatters = {
         php_cs_fixer = {
@@ -48,7 +62,7 @@ return {
             function()
               local config = vim.fs.find({ '.php-cs-fixer.dist.php', '.php-cs-fixer.php' }, { upward = true })[1]
               if config then return '--config=' .. config end
-              return nil -- Si no hay config, devolvemos nil y conform lo ignora
+              return nil -- No config found: return nil and conform skips the flag
             end,
           },
           stdin = false,

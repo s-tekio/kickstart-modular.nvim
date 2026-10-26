@@ -1,12 +1,12 @@
 return {
   'phpactor/phpactor',
-  build = 'composer install', -- Esto compila el ejecutable si no lo tienes
-  ft = 'php', -- Solo se carga para archivos PHP
+  build = 'composer install', -- Builds the executable if you do not have it yet
+  ft = 'php', -- Only loaded for PHP files
   config = function()
-    -- Al poner 'nvim', Phpactor usará vim.ui.select()
-    -- que es lo que Snacks.picker captura perfectamente en vertical.
+    -- With 'nvim', Phpactor uses vim.ui.select(),
+    -- which is what Snacks.picker captures nicely in a vertical layout.
     vim.g.phpactorMenuStrategy = 'nvim'
-    -- Para los inputs (como la ruta al mover clases)
+    -- For the inputs (such as the path when moving classes)
     vim.g.phpactorInputHandlerStrategy = 'nvim'
   end,
 }

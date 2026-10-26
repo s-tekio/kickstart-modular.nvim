@@ -98,7 +98,7 @@ vim.env.PATH = vim.fn.stdpath 'data' .. '/mason/bin' .. ':' .. vim.env.PATH
 
 vim.filetype.add {
   extension = {
-    twig = 'html', -- O "twig" si usas un plugin específico de Twig
+    twig = 'html', -- Or 'twig' if you use a Twig-specific plugin
   },
 }
 

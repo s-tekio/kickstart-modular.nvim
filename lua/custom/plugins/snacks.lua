@@ -36,9 +36,9 @@ return {
         enabled = true,
         sources = {
           files = {
-            hidden = true, -- Ver archivos .env
-            ignored = true, -- Ver archivos en .gitignore
-            -- Excluimos manualmente lo que NO queremos ver nunca
+            hidden = true, -- Show .env files
+            ignored = true, -- Show files listed in .gitignore
+            -- Manually exclude what we never want to see
             exclude = { '.git', 'vendor', 'node_modules', '.phpunit.result.cache', '**/cache/**', '**/log/**', '**/logs/**' },
           },
           grep = {
@@ -91,7 +91,7 @@ return {
         snacks.picker.files(opts)
       end
 
-      -- [[ Keymaps Estándar ]]
+      -- [[ Standard Keymaps ]]
       map('n', '<leader>fh', picker.help, { desc = 'Search [H]elp' })
       map('n', '<leader>fk', picker.keymaps, { desc = 'Search [K]eymaps' })
       map({ 'n', 'x' }, '<leader>ff', search_files, { desc = 'Search [F]iles' })

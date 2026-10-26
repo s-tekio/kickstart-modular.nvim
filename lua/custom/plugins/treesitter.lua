@@ -7,34 +7,52 @@ return {
     build = ':TSUpdate',
     branch = 'main',
     config = function()
-      local ensure_installed = {
+      -- The `main` branch installs parsers into stdpath('data')/site (the default) and has no
+      -- `setup()` options for highlight/indent: highlighting and indentation are wired here.
+      local parsers = {
         'bash',
-        -- 'c',
+        'c',
+        'css',
         'diff',
         'html',
-        'css',
         'javascript',
-        'typescript',
-        'twig',
+        'json',
         'lua',
         'luadoc',
         'markdown',
         'markdown_inline',
         'php',
+        'php_only',
         'query',
+        'scss',
         'terraform',
+        'tsx',
+        'twig',
+        'typescript',
         'vim',
         'vimdoc',
         'yaml',
       }
 
-      require('nvim-treesitter').setup {
-        install_dir = vim.fs.joinpath(vim.fn.stdpath 'data', 'site'),
-        ensure_installed = ensure_installed,
-        auto_install = true,
-        highlight = { enable = true },
-        indent = { enable = true },
-      }
+      require('nvim-treesitter').install(parsers)
+
+      vim.api.nvim_create_autocmd('FileType', {
+        callback = function(args)
+          local buf, filetype = args.buf, args.match
+
+          local language = vim.treesitter.language.get_lang(filetype)
+          if not language then return end
+
+          -- Load the parser when it exists; files without one keep their regex syntax.
+          if not vim.treesitter.language.add(language) then return end
+
+          -- Syntax highlighting and other treesitter features.
+          vim.treesitter.start(buf, language)
+
+          -- Treesitter based indentation (see `:help treesitter-indent`).
+          vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+        end,
+      })
     end,
   },
 }

@@ -124,10 +124,10 @@ vim.api.nvim_create_user_command('PhpService', function()
   end)
 end, {})
 
-vim.api.nvim_create_user_command('XDebugPort', function() -- Nota: mejor sin espacio en el nombre del comando
+vim.api.nvim_create_user_command('XDebugPort', function() -- Note: better without a space in the command name
   vim.ui.input({
     prompt = 'Enter port to use by XDebug: ',
-    -- Asegúrate de que el default sea un string para el input
+    -- Make sure the default is a string, as the input expects one
     default = tostring(vim.g.x_debug_port or 9004),
   }, function(input)
     if input and input ~= '' then

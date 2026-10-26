@@ -22,6 +22,9 @@ return {
 
       -- Useful status updates for LSP.
       { 'j-hui/fidget.nvim', opts = {} },
+
+      -- JSON/YAML schemas from SchemaStore (tsconfig, package.json, docker-compose, ...).
+      'b0o/SchemaStore.nvim',
     },
     config = function()
       -- Brief aside: **What is LSP?**
@@ -183,7 +186,7 @@ return {
               references = {
                 exclude = {},
               },
-              -- Inlay hints (requiere licencia premium)
+              -- Inlay hints (premium licence required)
               inlayHint = {
                 returnTypes = true,
                 parameterTypes = true,
@@ -230,12 +233,13 @@ return {
         yamlls = {
           settings = {
             yaml = {
-              -- Enable this when 'b0o/SchemaStore.nvim' is installed
-              -- schemaStore = {
-              --   enable = false, -- Deshabilitamos el nativo para usar el plugin (es mejor)
-              --   url = '',
-              -- },
-              -- schemas = require('schemastore').yaml.schemas(),
+              -- The bundled schema store is replaced by SchemaStore.nvim, which keeps its copy
+              -- of the schemas up to date and resolves them offline.
+              schemaStore = {
+                enable = false,
+                url = '',
+              },
+              schemas = require('schemastore').yaml.schemas(),
             },
           },
         },
@@ -250,18 +254,37 @@ return {
         },
 
         -- JavaScript / TypeScript
-        -- Usamos vtsls (sucesor de tsserver) o tsserver (ahora llamado ts_ls)
+        -- ts_ls is the current name of tsserver. vtsls is a drop-in alternative if you ever need
+        -- a different treatment of tsconfig project references; enable only one of the two.
         ts_ls = {
           root_markers = { '.env.local', 'symfony.lock', '.git', 'composer.json', 'package.json' },
           single_file_support = true,
         },
 
-        -- Emmet (Opcional pero ALTAMENTE recomendado para HTML/Twig)
-        -- Te permite escribir div.container>ul>li y expandirlo con tab
-        emmet_ls = {
-          filetypes = { 'html', 'twig', 'css', 'sass', 'scss', 'less', 'javascriptreact' },
-          root_markers = { '.env.local', 'symfony.lock', '.git', 'composer.json', 'package.json' },
+        -- Tailwind CSS: class completion, hover docs and lint for the utilities used in JSX/TSX.
+        -- Tailwind v4 keeps its theme in CSS (`@import 'tailwindcss'`), so the server discovers
+        -- the entry point by itself. Pin it explicitly only if discovery ever fails:
+        --   settings = { tailwindCSS = { experimental = { configFile = 'src/index.css' } } },
+        -- The default filetype list also covers Blade/PHP templates, which would start a Node
+        -- server on every PHP file of the Symfony projects, so keep it to the web stack.
+        tailwindcss = {
+          filetypes = { 'html', 'css', 'scss', 'less', 'javascript', 'typescript', 'javascriptreact', 'typescriptreact' },
         },
+
+        -- JSON with SchemaStore validation (tsconfig*, package.json, .oxlintrc.json, ...).
+        jsonls = {
+          settings = {
+            json = {
+              schemas = require('schemastore').json.schemas(),
+              validate = { enable = true },
+            },
+          },
+        },
+
+        -- oxlint ships its own language server and prefers the project's binary from
+        -- node_modules/.bin, so the reported rules match what `npm run lint` enforces.
+        oxlint = {},
+
         terraformls = {},
       }
 
@@ -273,7 +296,8 @@ return {
       --
       -- You can press `g?` for help in this menu.
 
-      -- Manual list for Mason
+      -- Manual list for Mason. The server keys from `servers` above are appended automatically
+      -- below, except the ones whose Mason package name differs (see `lsp_name_exceptions`).
       local ensure_installed = {
         'php-cs-fixer', -- Linter / formatter (php)
         'phpstan', -- static analysis
@@ -281,12 +305,28 @@ return {
         'marksman', -- markdown LSP
         'dotenv-linter', -- Linter (dotenv)
         -- 'markdownlint-cli2', -- markdown Linter
+        -- Mason package names that do not match their nvim-lspconfig server key:
+        'lua-language-server',
+        'typescript-language-server',
+        'tailwindcss-language-server',
+        'css-lsp',
+        'html-lsp',
+        'yaml-language-server',
+        'json-lsp',
+        'terraform-ls',
       }
 
       local lsp_name_exceptions = {
-        -- Add here names which key used in server doesn't match with what Mason expects
-        -- Example: Imagine 'my_ls' in mason is 'my-ls-server'.
-        -- Add here ['my_ls'] = true and maker sure to add 'my-ls-server' in ensure_installed table above
+        -- Server keys whose Mason package is not named after the key. Their package is listed in
+        -- `ensure_installed` above instead of being derived from the key.
+        lua_ls = true, -- mason: lua-language-server
+        ts_ls = true, -- mason: typescript-language-server
+        tailwindcss = true, -- mason: tailwindcss-language-server
+        cssls = true, -- mason: css-lsp
+        html = true, -- mason: html-lsp
+        yamlls = true, -- mason: yaml-language-server
+        jsonls = true, -- mason: json-lsp
+        terraformls = true, -- mason: terraform-ls
       }
 
       for server_name, _ in pairs(servers or {}) do
@@ -295,16 +335,22 @@ return {
 
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
-      -- Required by nvim-ufo for LSP-based folding
+      -- Capabilities advertised to every server. blink.cmp adds snippet support and resolved
+      -- completion items on top of Neovim's defaults; the pcall keeps this file loadable when the
+      -- completion plugin is unavailable.
+      local has_blink, blink = pcall(require, 'blink.cmp')
+      local capabilities = has_blink and blink.get_lsp_capabilities() or {}
+
+      -- foldingRange: required by nvim-ufo for LSP-based folding
       vim.lsp.config('*', {
-        capabilities = {
+        capabilities = vim.tbl_deep_extend('force', capabilities, {
           textDocument = {
             foldingRange = {
               dynamicRegistration = false,
               lineFoldingOnly = true,
             },
           },
-        },
+        }),
       })
 
       for name, server in pairs(servers) do

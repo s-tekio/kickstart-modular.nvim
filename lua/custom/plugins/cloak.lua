@@ -20,10 +20,9 @@ return {
           cloak_pattern = '=.+',
         },
       },
-
     }
 
-		vim.keymap.set('n', '<leader>cd', ':CloakDisable<CR>', { desc = '[C]loak [D]isable' })
-		vim.keymap.set('n', '<leader>ce', ':CloakEnable<CR>', { desc = '[C]loak [E]nable' })
+    vim.keymap.set('n', '<leader>cd', ':CloakDisable<CR>', { desc = '[C]loak [D]isable' })
+    vim.keymap.set('n', '<leader>ce', ':CloakEnable<CR>', { desc = '[C]loak [E]nable' })
   end,
 }

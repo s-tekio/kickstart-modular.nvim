@@ -5,8 +5,8 @@ return {
       require('pi-nvim').setup {
         command = 'gentle-shell',
         split = 'vertical',
-        socket_path = nil, -- Auto-descubre los sockets en /tmp automáticamente
-        set_default_keymaps = false, -- Desactivamos los nativos para configurarlos a nuestro gusto
+        socket_path = nil, -- Auto-discovers the sockets in /tmp
+        set_default_keymaps = false, -- Defaults disabled so we can map them our way
       }
 
       local map = vim.keymap.set

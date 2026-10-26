@@ -46,7 +46,7 @@ return {
       local project_root = vim.fs.dirname(composer_match)
       local project_name = vim.fn.fnamemodify(project_root, ':t')
 
-      -- BUSQUEDA DEL SERVICIO
+      -- SERVICE LOOKUP
       local service = nil
       local docker_network_root_path = ''
       local compose_path = nil
@@ -68,7 +68,7 @@ return {
 
       if compose_path == nil then compose_path = find_docker_compose(project_root) end
 
-      -- 1. DETECCIÓN DEL XML (Priorizamos functional-tests | unit-tests si existen)
+      -- 1. XML DETECTION (functional-tests | unit-tests take priority when present)
       local config_file = nil
       if vim.fn.filereadable(project_root .. '/tests/phpunit.xml') == 1 then
         config_file = 'tests/phpunit.xml'
@@ -82,15 +82,15 @@ return {
         config_file = 'tests/unit-tests.xml'
       end
 
-      -- 2. LIMPIEZA DE RUTA (Extraemos solo lo relativo a partir de tests/ o src/, o capturamos el archivo si se pasó directamente)
+      -- 2. PATH CLEANUP (keep only what follows tests/ or src/, or take the file as given)
       local relative_path = cmd:match '(tests[^%s:#]*)' or cmd:match '(src[^%s:#]*)' or cmd:match '([^%s:#]+%.php)'
 
-      -- 3. EXTRACCIÓN DEL FILTRO
+      -- 3. FILTER EXTRACTION
       local filter = cmd:match '%-%-filter%s+([^%s]+)'
       local filter_arg = filter and ('--filter ' .. filter) or ''
 
-      -- 4. RECONSTRUCCIÓN DEL COMANDO
-      -- Importante: El flag -c va JUSTO antes de la ruta del archivo o al final de los flags
+      -- 4. COMMAND REBUILD
+      -- Important: the -c flag goes right before the file path, or at the end of the flags
       local final_cmd
       if compose_path == nil then
         final_cmd =
@@ -108,7 +108,7 @@ return {
         )
       end
 
-      -- El truco del '#' para anular la basura que añada vim-test al final
+      -- The '#' trick swallows whatever junk vim-test appends at the end
       return final_cmd .. ' #'
     end
 
