@@ -4,6 +4,11 @@ return {
     event = 'VeryLazy',
     opts = {
       lsp = {
+        -- noice installs one hover handler per client. With several servers attached to the same
+        -- buffer (ts_ls + tailwindcss + oxlint), the ones that have nothing to say for the symbol
+        -- under the cursor used to raise a bare "No information available" notification next to
+        -- the real hover window. `silent` drops that notification and keeps the hover content.
+        hover = { silent = true },
         override = {
           ['vim.lsp.util.convert_input_to_markdown_lines'] = true,
           ['vim.lsp.util.stylize_markdown'] = true,
