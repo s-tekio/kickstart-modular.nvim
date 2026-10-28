@@ -17,7 +17,7 @@ return {
       thumb = { highlight = { bg = '#4b4e57' }, blend = 0 },
     },
     minimap = {
-      enabled = false,
+      enabled = true,
       -- left off so a toggled-on minimap stays visible instead of hiding itself
       autohide = false,
     },
