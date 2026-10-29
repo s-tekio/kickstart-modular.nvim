@@ -2,6 +2,8 @@ return {
   'petertriho/nvim-scrollbar',
   -- v2 lands on main on 2026-11-16; remove this line after that date
   branch = 'refactor/v2',
+  -- `keys` would make lazy.nvim defer loading until the first keypress
+  lazy = false,
   keys = {
     { '<leader>us', '<cmd>MinimapToggle<cr>', desc = 'Toggle minimap' },
   },
@@ -18,6 +20,7 @@ return {
     },
     minimap = {
       enabled = true,
+      show = false, -- start hidden; <leader>us shows it
       -- left off so a toggled-on minimap stays visible instead of hiding itself
       autohide = false,
     },
