@@ -257,8 +257,27 @@ return {
         -- ts_ls is the current name of tsserver. vtsls is a drop-in alternative if you ever need
         -- a different treatment of tsconfig project references; enable only one of the two.
         ts_ls = {
-          root_markers = { '.env.local', 'symfony.lock', '.git', 'composer.json', 'package.json' },
-          single_file_support = true,
+          -- Lets tsserver resolve `.astro` imports from .ts/.js files with their real types.
+          -- The plugin ships inside Mason's astro-language-server package.
+          init_options = {
+            plugins = {
+              {
+                name = '@astrojs/ts-plugin',
+                location = vim.fn.stdpath 'data' .. '/mason/packages/astro-language-server',
+              },
+            },
+          },
+        },
+
+        -- Astro: handles the TypeScript inside `.astro` files itself (ts_ls only covers .ts/.js).
+        -- It needs a TypeScript SDK; prefer the project's node_modules and fall back to the copy
+        -- bundled with Mason's typescript-language-server.
+        astro = {
+          before_init = function(_, config)
+            local tsdk = require('lspconfig.util').get_typescript_server_path(config.root_dir)
+            if tsdk == '' then tsdk = vim.fn.stdpath 'data' .. '/mason/packages/typescript-language-server/node_modules/typescript/lib' end
+            config.init_options = vim.tbl_deep_extend('force', config.init_options or {}, { typescript = { tsdk = tsdk } })
+          end,
         },
 
         -- Tailwind CSS: class completion, hover docs and lint for the utilities used in JSX/TSX.
@@ -268,7 +287,7 @@ return {
         -- The default filetype list also covers Blade/PHP templates, which would start a Node
         -- server on every PHP file of the Symfony projects, so keep it to the web stack.
         tailwindcss = {
-          filetypes = { 'html', 'css', 'scss', 'less', 'javascript', 'typescript', 'javascriptreact', 'typescriptreact' },
+          filetypes = { 'html', 'css', 'scss', 'less', 'javascript', 'typescript', 'javascriptreact', 'typescriptreact', 'astro' },
         },
 
         -- JSON with SchemaStore validation (tsconfig*, package.json, .oxlintrc.json, ...).
@@ -308,6 +327,7 @@ return {
         -- Mason package names that do not match their nvim-lspconfig server key:
         'lua-language-server',
         'typescript-language-server',
+        'astro-language-server',
         'tailwindcss-language-server',
         'css-lsp',
         'html-lsp',
@@ -321,6 +341,7 @@ return {
         -- `ensure_installed` above instead of being derived from the key.
         lua_ls = true, -- mason: lua-language-server
         ts_ls = true, -- mason: typescript-language-server
+        astro = true, -- mason: astro-language-server
         tailwindcss = true, -- mason: tailwindcss-language-server
         cssls = true, -- mason: css-lsp
         html = true, -- mason: html-lsp
