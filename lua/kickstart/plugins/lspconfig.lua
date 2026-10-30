@@ -257,6 +257,7 @@ return {
         -- ts_ls is the current name of tsserver. vtsls is a drop-in alternative if you ever need
         -- a different treatment of tsconfig project references; enable only one of the two.
         ts_ls = {
+          root_markers = { '.env.local', 'symfony.lock', '.git', 'composer.json', 'package.json' },
           -- Lets tsserver resolve `.astro` imports from .ts/.js files with their real types.
           -- The plugin ships inside Mason's astro-language-server package.
           init_options = {
@@ -270,13 +271,21 @@ return {
         },
 
         -- Astro: handles the TypeScript inside `.astro` files itself (ts_ls only covers .ts/.js).
-        -- It needs a TypeScript SDK; prefer the project's node_modules and fall back to the copy
-        -- bundled with Mason's typescript-language-server.
+        -- It refuses to start without a TypeScript SDK; prefer the project's node_modules and fall
+        -- back to the copy bundled with Mason's typescript-language-server.
         astro = {
+          -- Declared here so `before_init` always has a table to mutate: Neovim binds
+          -- `initializationOptions` to this exact `init_options` *before* calling `before_init`,
+          -- so the mutation has to happen in place. Reassigning `config.init_options` (for example
+          -- with `vim.tbl_deep_extend`) changes nothing on the wire and the server still fails with
+          -- "The `typescript.tsdk` init option is required".
+          init_options = { typescript = {} },
           before_init = function(_, config)
+            local typescript = config.init_options.typescript
+            if typescript.tsdk then return end
             local tsdk = require('lspconfig.util').get_typescript_server_path(config.root_dir)
             if tsdk == '' then tsdk = vim.fn.stdpath 'data' .. '/mason/packages/typescript-language-server/node_modules/typescript/lib' end
-            config.init_options = vim.tbl_deep_extend('force', config.init_options or {}, { typescript = { tsdk = tsdk } })
+            typescript.tsdk = tsdk
           end,
         },
 
