@@ -132,6 +132,43 @@ return {
       -- Enable the following language servers
       --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
       --  See `:help lsp-config` for information about keys and how to configure
+      -- PHP version for intelephense, resolved per project root when the client starts:
+      --   1. composer.json `config.platform.php` (exact version the project pins)
+      --   2. composer.json `require.php` (lowest version the constraint accepts, e.g. '^8.2' -> '8.2.0')
+      --   3. the `php` binary on this machine (queried once, then cached)
+      -- Returns nil when nothing is found, so intelephense keeps its own default.
+      local local_php_version
+      local function php_version_for(root_dir)
+        local function normalize(constraint)
+          if type(constraint) ~= 'string' then return nil end
+          local major, minor, patch = constraint:match '(%d+)%.?(%d*)%.?(%d*)'
+          if not major then return nil end
+          return ('%s.%s.%s'):format(major, minor ~= '' and minor or '0', patch ~= '' and patch or '0')
+        end
+
+        if root_dir then
+          local file = io.open(root_dir .. '/composer.json', 'r')
+          if file then
+            local ok, composer = pcall(vim.json.decode, file:read '*a')
+            file:close()
+            if ok and type(composer) == 'table' then
+              local platform = type(composer.config) == 'table' and type(composer.config.platform) == 'table' and composer.config.platform.php
+              local version = normalize(platform) or normalize(type(composer.require) == 'table' and composer.require.php)
+              if version then return version end
+            end
+          end
+        end
+
+        if local_php_version == nil then
+          local_php_version = false
+          if vim.fn.executable 'php' == 1 then
+            local out = vim.fn.system { 'php', '-r', 'echo PHP_MAJOR_VERSION.".".PHP_MINOR_VERSION.".".PHP_RELEASE_VERSION;' }
+            if vim.v.shell_error == 0 then local_php_version = vim.trim(out) end
+          end
+        end
+        return local_php_version or nil
+      end
+
       ---@type table<string, vim.lsp.Config>
       local servers = {
         stylua = {}, -- Used to format Lua code
@@ -167,6 +204,10 @@ return {
 
         intelephense = {
           root_markers = { '.env.local', 'symfony.lock', '.git', 'composer.json' },
+          -- Mutate in place: the client already holds a reference to this settings table
+          before_init = function(_, config)
+            config.settings.intelephense.environment.phpVersion = php_version_for(config.root_dir)
+          end,
           init_options = {
             licenceKey = os.getenv 'INTELEPHENSE_LICENSE' or '',
             storagePath = vim.fn.stdpath 'cache' .. '/intelephense',
@@ -181,7 +222,7 @@ return {
               },
               environment = {
                 includePaths = { 'vendor' },
-                phpVersion = '8.2.28',
+                -- phpVersion is filled in by `before_init` below (see php_version_for)
               },
               references = {
                 exclude = {},
