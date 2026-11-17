@@ -205,9 +205,7 @@ return {
         intelephense = {
           root_markers = { '.env.local', 'symfony.lock', '.git', 'composer.json' },
           -- Mutate in place: the client already holds a reference to this settings table
-          before_init = function(_, config)
-            config.settings.intelephense.environment.phpVersion = php_version_for(config.root_dir)
-          end,
+          before_init = function(_, config) config.settings.intelephense.environment.phpVersion = php_version_for(config.root_dir) end,
           init_options = {
             licenceKey = os.getenv 'INTELEPHENSE_LICENSE' or '',
             storagePath = vim.fn.stdpath 'cache' .. '/intelephense',
@@ -371,6 +369,7 @@ return {
         'php-cs-fixer', -- Linter / formatter (php)
         'phpstan', -- static analysis
         'php-debug-adapter', -- DAP
+        'js-debug-adapter', -- DAP
         'marksman', -- markdown LSP
         'dotenv-linter', -- Linter (dotenv)
         -- 'markdownlint-cli2', -- markdown Linter

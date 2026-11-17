@@ -62,6 +62,7 @@ return {
       -- online, please don't ask me how to install them :)
       ensure_installed = {
         'php-debug-adapter',
+        'js', -- js-debug-adapter (vscode-js-debug): TS/JS, React, Node
       },
     }
 
@@ -128,5 +129,78 @@ return {
         },
       },
     }
+
+    -- JavaScript / TypeScript / React (vscode-js-debug)
+    local js_debug_server = vim.fn.stdpath 'data' .. '/mason/packages/js-debug-adapter/js-debug/src/dapDebugServer.js'
+    for _, adapter in ipairs { 'pwa-chrome', 'pwa-node' } do
+      dap.adapters[adapter] = {
+        type = 'server',
+        host = 'localhost',
+        port = '${port}',
+        executable = {
+          command = 'node',
+          args = { js_debug_server, '${port}' },
+        },
+      }
+    end
+
+    -- js-debug only auto-detects Chrome/Edge, so point it at the installed Chromium-based browser
+    local browser = vim.iter({ 'brave', 'chromium', 'google-chrome-stable', 'google-chrome' }):map(vim.fn.exepath):find(function(p) return p ~= '' end)
+
+    -- The browser requests http://localhost:5173/src/App.tsx; js-debug maps that URL to
+    -- <webRoot>/src/App.tsx. webRoot must be the host folder of the Vite project (where
+    -- vite.config.* lives), not necessarily Neovim's cwd (e.g. a frontend/ subfolder).
+    local function frontend_root()
+      return vim.fs.root(0, { 'vite.config.ts', 'vite.config.mts', 'vite.config.js', 'vite.config.mjs', 'package.json' }) or vim.fn.getcwd()
+    end
+
+    -- Source maps generated inside Docker may reference container paths (/app/src/...).
+    -- Remap them to the host folder. Override the container path with vim.g.js_docker_root.
+    -- Setting this table replaces js-debug's defaults, so the webpack ones are kept here.
+    local source_map_overrides = {
+      [(vim.g.js_docker_root or '/app') .. '/*'] = '${webRoot}/*',
+      ['webpack:///./~/*'] = '${webRoot}/node_modules/*',
+      ['webpack:////*'] = '/*',
+      ['webpack://?:*/*'] = '${webRoot}/*',
+    }
+
+    local js_configurations = {
+      {
+        type = 'pwa-chrome',
+        request = 'launch',
+        name = 'React: Launch Chrome against dev server',
+        url = function()
+          -- Vite defaults to 5173, CRA/Next to 3000
+          return vim.fn.input('Dev server URL: ', 'http://localhost:5173')
+        end,
+        runtimeExecutable = browser,
+        webRoot = frontend_root,
+        sourceMaps = true,
+        sourceMapPathOverrides = source_map_overrides,
+      },
+      {
+        type = 'pwa-chrome',
+        request = 'attach',
+        -- Start the browser first: brave --remote-debugging-port=9222
+        name = 'React: Attach to browser (--remote-debugging-port=9222)',
+        port = 9222,
+        webRoot = frontend_root,
+        sourceMaps = true,
+        sourceMapPathOverrides = source_map_overrides,
+      },
+      {
+        type = 'pwa-node',
+        request = 'launch',
+        -- Plain Node scripts only (not React components / .tsx)
+        name = 'Node: Launch current file',
+        program = '${file}',
+        cwd = '${workspaceFolder}',
+        sourceMaps = true,
+      },
+    }
+
+    for _, ft in ipairs { 'typescript', 'typescriptreact', 'javascript', 'javascriptreact' } do
+      dap.configurations[ft] = js_configurations
+    end
   end,
 }
